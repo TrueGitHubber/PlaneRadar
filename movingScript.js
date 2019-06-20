@@ -98,12 +98,13 @@ flights["SU321"].bindPopup(popup_5deecb525dae45f4933ad13864d615c4)
 $(document).ready(function () 
 {
 	var i = 0;
+	setInterval(readFile.bind(null, "nowPlanesInfo.json"), 5000);
 	$("#test").bind("click", function()
 	{
-		
+
 	//	flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
 		//flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
-		readFile("nowPlanesInfo.json")
+		readFile("nowPlanesInfo.json");
 		i=i+1;
 	});
 		
