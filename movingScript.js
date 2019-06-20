@@ -38,20 +38,17 @@ function makeTextPopUpOnMarker(marker, str)
 function updateInfoAboutPlanes(data)
 {
 	//alert("Success");
+	for(item of flights)
+	{
+		deleteMarker(item[1]);
+		console.log(item[1]);
+	}
+	flights.clear();
 	for(let i = 0; i < data.result.length; i++)
 	{
-		if(flights.has(data.result[i].flight))
-		{
-		flights[data.result[i].flight] = moveMarker(flights[data.result[i].flight], 
+		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight], 
 												  [data.result[i].latitude, data.result[i].longitude]
-												   );
-		}
-		else
-		{
-			flights[data.result[i].flight] = addMarker(flights[data.result[i].flight], 
-												  [data.result[i].latitude, data.result[i].longitude]
-												   );
-		}
+												   ));
 	};
 };
 		
@@ -115,12 +112,14 @@ $(document).ready(function ()
 	var i = 0;
 	$("#test").bind("click", function()
 	{
-		readFile("nowPlanesInfo.json")
 		
-		flights["SU321"] = moveMarker(flights["SU321"], [54.890049, 20.59263+i]);
-		flights["SU321"] = makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo");
+		flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
+		flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
+		readFile("nowPlanesInfo.json")
 		i=i+1;
 	});
+		
+
 	
 });
 
