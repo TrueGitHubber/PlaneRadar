@@ -126,9 +126,8 @@ function func() {
 		  });
 	});
   }
-  
+  $("#test").bind("click", function(){
   func().then(function(data) {//получили результат
-	// console.log(data);
 	for (let i = 0; i < data.result.length; i++){
 		console.log(data.result[i]);
 		flights[data.result[i].flight] = L.marker(
@@ -137,3 +136,4 @@ function func() {
 		).addTo(webmap);
 	}
 	}, function(){});// для ошибки 
+});
