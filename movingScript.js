@@ -113,8 +113,8 @@ $(document).ready(function ()
 	$("#test").bind("click", function()
 	{
 		
-		flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
-		flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
+	//	flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
+		//flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
 		readFile("nowPlanesInfo.json")
 		i=i+1;
 	});

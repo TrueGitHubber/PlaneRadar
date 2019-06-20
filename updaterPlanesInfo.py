@@ -61,4 +61,8 @@ def getPlanes():
 
 if __name__ == "__main__":
     while(1):
-        getPlanes()
+        try:
+            getPlanes()
+        except:
+            print(sys.exc_info())
+            continue
