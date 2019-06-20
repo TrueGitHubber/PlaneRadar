@@ -5,11 +5,13 @@ function deleteMarker(marker)
 
 function addMarker(marker, coords)
 {
-		marker = L.marker( coords, {} ).addTo(webmap);
-		var icon_0b034235dc104986b7cddce47052427b = L.AwesomeMarkers.icon(
-		{"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
-		);
-		marker.setIcon(icon_0b034235dc104986b7cddce47052427b);
+		var myIcon = L.icon({
+		iconUrl: 'Images/plane.png',
+		iconSize: [20, 27],
+		iconAnchor: coords,
+		popupAnchor: coords,
+	});
+	  marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
 		return marker;
 };
 
@@ -112,5 +114,4 @@ $(document).ready(function ()
 	
 });
 
-        
-    
+       
