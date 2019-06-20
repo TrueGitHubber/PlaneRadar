@@ -1,6 +1,6 @@
 function deleteMarker(marker)
 {
-		webmap.removeLayer(flights["SU321"]);
+		webmap.removeLayer(marker);
 };
 
 function addMarker(marker, coords)
@@ -35,11 +35,39 @@ function makeTextPopUpOnMarker(marker, str)
 	return marker;
 };
 
+function updateInfoAboutPlanes(data)
+{
+	//alert("Success");
+	for(let i = 0; i < data.result.length; i++)
+	{
+		if(flights.has(data.result[i].flight))
+		{
+		flights[data.result[i].flight] = moveMarker(flights[data.result[i].flight], 
+												  [data.result[i].latitude, data.result[i].longitude]
+												   );
+		}
+		else
+		{
+			flights[data.result[i].flight] = addMarker(flights[data.result[i].flight], 
+												  [data.result[i].latitude, data.result[i].longitude]
+												   );
+		}
+	};
+};
+		
 function readFile(filename) 
 {
-	jQuery.getJSON(filename,function( json ) 
-	{
-		alert(1);
+	$.ajax({ 
+		type: "GET", 
+		url: filename, 
+		//data: "data", 
+		dataType: "json",
+		success: updateInfoAboutPlanes,
+		error: function(response)
+		{
+			console.log(response);
+			alert("Fail");
+		}
 	});
 }
 var webmap = L.map
@@ -87,9 +115,10 @@ $(document).ready(function ()
 	var i = 0;
 	$("#test").bind("click", function()
 	{
-		readFile("nowPlanesInfo.json");
+		readFile("nowPlanesInfo.json")
+		
 		flights["SU321"] = moveMarker(flights["SU321"], [54.890049, 20.59263+i]);
-		//flights["SU321"] = makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo");
+		flights["SU321"] = makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo");
 		i=i+1;
 	});
 	

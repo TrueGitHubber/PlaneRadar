@@ -7,11 +7,13 @@ def writeDataPlanes(data):
     formatJson = {}
     formatJson["result"] = []
     i = 0
+    n = 1
     for key in data:
         if(key != "full_count" and key != "version" and key != "stats"):
             formatJson["result"].append({})
             if(data[key][13] == ""):
-                data[key][13] = None
+                data[key][13] = "None" + str(n)
+                n += 1
             if(str(data[key][18]) == ""):
                 data[key][18] = None
             if(str(data[key][8]) == ""):
@@ -31,9 +33,9 @@ def writeDataPlanes(data):
             formatJson["result"][i]["departure"] = data[key][11]
             formatJson["result"][i]["arrival"] = data[key][12]
             i+=1
-
+    formatJson = json.dumps(formatJson)
     f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
-    f.write(str(formatJson))
+    f.write(formatJson)
     f.close()
 def getPlanes():
     t1 = time.time()
