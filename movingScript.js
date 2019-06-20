@@ -19,11 +19,8 @@ function moveMarker(marker, coords)
 {
 	deleteMarker(marker);
 	marker = addMarker(marker, coords);
-	/*
-	
-	*/
 	return marker;
-}
+};
 
 function makeTextPopUpOnMarker(marker, str)
 {
@@ -68,7 +65,7 @@ function readFile(filename)
 			alert("Fail");
 		}
 	});
-}
+};
 
 	
 var flights = new Map();
