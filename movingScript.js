@@ -11,7 +11,7 @@ function addMarker(marker, coords)
 		iconAnchor: coords,
 		popupAnchor: coords,
 	});
-	marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
+	  marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
 		return marker;
 };
 
@@ -114,5 +114,4 @@ $(document).ready(function ()
 	
 });
 
-        
-    
+       
