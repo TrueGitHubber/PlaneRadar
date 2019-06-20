@@ -8,10 +8,10 @@ function addMarker(marker, coords)
 		var myIcon = L.icon({
 		iconUrl: 'Images/plane.png',
 		iconSize: [20, 27],
-		iconAnchor: coords,
+		iconAnchor: [coords[0]-48, coords[1]],
 		popupAnchor: coords,
 	});
-	  marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
+	    marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
 		return marker;
 };
 
