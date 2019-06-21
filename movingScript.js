@@ -1,17 +1,17 @@
-// var asyncJSON = require('async-json');
-
 function deleteMarker(marker)
 {
-		webmap.removeLayer(flights["SU321"]);
+		webmap.removeLayer(marker);
 };
 
 function addMarker(marker, coords)
 {
-		marker = L.marker( coords, {} ).addTo(webmap);
-		var icon_0b034235dc104986b7cddce47052427b = L.AwesomeMarkers.icon(
-		{"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
-		);
-		marker.setIcon(icon_0b034235dc104986b7cddce47052427b);
+		var myIcon = L.icon({
+		iconUrl: 'Images/plane.png',
+		iconSize: [20, 27],
+		iconAnchor: [coords[0]-48, coords[1]],
+		popupAnchor: coords,
+	});
+	    marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
 		return marker;
 };
 
@@ -19,11 +19,8 @@ function moveMarker(marker, coords)
 {
 	deleteMarker(marker);
 	marker = addMarker(marker, coords);
-	/*
-	
-	*/
 	return marker;
-}
+};
 
 function makeTextPopUpOnMarker(marker, str)
 {
@@ -36,25 +33,37 @@ function makeTextPopUpOnMarker(marker, str)
 	
 	return marker;
 };
-
-// function readFile(filename) 
-// {
-// 	$.getJSON(filename,function( json ) 
-// 	{
-// 		console.log(json);
-// 	});
-// }
-var webmap = L.map
-		(
-			"webmap",
-			{
-				center: [54.89, 20.59],
-				crs: L.CRS.EPSG3857,
-				zoom: 5,
-				zoomControl: true,
-				preferCanvas: false,
-			}
-		);
+function updateInfoAboutPlanes(data)
+{
+	//alert("Success");
+	for(item of flights)
+	{
+		deleteMarker(item[1]);
+	}
+	flights.clear();
+	for(let i = 0; i < data.result.length; i++)
+	{
+		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight], 
+												  [data.result[i].latitude, data.result[i].longitude]
+												   ));
+	};
+};
+		
+function readFile(filename) 
+{
+	$.ajax({ 
+		type: "GET", 
+		url: filename, 
+		//data: "data", 
+		dataType: "json",
+		success: updateInfoAboutPlanes,
+		error: function(response)
+		{
+			console.log(response);
+			//alert("Fail");
+		}
+	});
+};
 
 	
 var flights = new Map();
@@ -84,56 +93,19 @@ popup_5deecb525dae45f4933ad13864d615c4.setContent(html_76c86b9bcf4f4a2b883ca84ba
 	
 
 flights["SU321"].bindPopup(popup_5deecb525dae45f4933ad13864d615c4)
-// $(document).ready(function ()
-// {
-// 	var i = 0;
-// 	$("#test").bind("click", function()
-// 	{
-		// $.getJSON("nowPlanesInfo.json", function(json) {
-		// 	alert(1);
-		// 	console.log(json); // this will show the info it in firebug console
-		// });
+$(document).ready(function () 
+{
+	//var i = 0;
+	setInterval(readFile.bind(null, "nowPlanesInfo.json"), 3000);
+/*	$("#test").bind("click", function()
+	{
 
-		// $.ajax({
-		// 	type: "GET",
-		// 	url: "nowPlanesInfo.json",
-		// 	// data: "data",
-		// 	dataType: "json",
-		// 	success: function (response) {
-		// 		console.log(response);
-		// 	},
-		// 	error: function (response) {
-		// 		console.log(response.result);
-		// 	},
-		// });
-		// readFile("nowPlanesInfo.json");
-		// flights["SU321"] = moveMarker(flights["SU321"], [54.890049, 20.59263+i]);
-		//flights["SU321"] = makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo");
-// 		i=i+1;
-// 	});
+	//	flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
+		//flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
+		readFile("nowPlanesInfo.json");
+		i=i+1;
+	});*/
+		
+
 	
-// });
-
-
-function func() {
-	return new Promise(function (resolve, reject) {
-	  $.ajax({
-			  type: 'GET',
-			  dataType: "json",
-			  url: 'nowPlanesInfo.json',
-			  success: resolve,
-			  error: reject
-		  });
-	});
-  }
-  $("#test").bind("click", function(){
-  func().then(function(data) {//получили результат
-	for (let i = 0; i < data.result.length; i++){
-		console.log(data.result[i]);
-		flights[data.result[i].flight] = L.marker(
-			[data.result[i].latitude, data.result[i].longitude],
-			{}
-		).addTo(webmap);
-	}
-	}, function(){});// для ошибки 
 });
