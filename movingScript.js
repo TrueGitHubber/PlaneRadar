@@ -33,7 +33,6 @@ function makeTextPopUpOnMarker(marker, str)
 	
 	return marker;
 };
-
 function updateInfoAboutPlanes(data)
 {
 	//alert("Success");
@@ -110,5 +109,3 @@ $(document).ready(function ()
 
 	
 });
-
-       
