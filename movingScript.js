@@ -40,7 +40,6 @@ function updateInfoAboutPlanes(data)
 	for(item of flights)
 	{
 		deleteMarker(item[1]);
-		console.log(item[1]);
 	}
 	flights.clear();
 	for(let i = 0; i < data.result.length; i++)
@@ -62,7 +61,7 @@ function readFile(filename)
 		error: function(response)
 		{
 			console.log(response);
-			alert("Fail");
+			//alert("Fail");
 		}
 	});
 };
@@ -97,16 +96,16 @@ popup_5deecb525dae45f4933ad13864d615c4.setContent(html_76c86b9bcf4f4a2b883ca84ba
 flights["SU321"].bindPopup(popup_5deecb525dae45f4933ad13864d615c4)
 $(document).ready(function () 
 {
-	var i = 0;
-	setInterval(readFile.bind(null, "nowPlanesInfo.json"), 5000);
-	$("#test").bind("click", function()
+	//var i = 0;
+	setInterval(readFile.bind(null, "nowPlanesInfo.json"), 3000);
+/*	$("#test").bind("click", function()
 	{
 
 	//	flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
 		//flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
 		readFile("nowPlanesInfo.json");
 		i=i+1;
-	});
+	});*/
 		
 
 	

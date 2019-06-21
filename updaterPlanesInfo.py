@@ -46,7 +46,7 @@ def getPlanes():
         req = get(url, headers = headers, timeout = 10)
         data = req.json()
         writeDataPlanes(data)
-        time.sleep(5-(time.time()-t1-0.0005))
+        time.sleep(3-(time.time()-t1-0.0005))
     except:
         if "ReadTimeout" in str(sys.exc_info()):
             print("ReadTimeout")
