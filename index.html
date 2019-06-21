@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>PlanesRadar</title>
+    <script>
+        L_NO_TOUCH = false;
+        L_DISABLE_3D = false;
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <style>
+        #webmap {
+            position: relative;
+            width: 100.0%;
+            height: 100.0%;
+            left: 20.0%;
+            top: -100%;
+        }
+
+        nav {
+            background-color: orange;
+            height: 100%;
+            width: 20%;
+        }
+    </style>
+</head>
+<body scroll="no" style="overflow: hidden"> 
+    <nav>
+        <ul>
+            <img src = "Images/logo.png"  width = "80%" height = "150">
+            <li>
+                <form>
+                    <p><strong>Авикомпании</strong></p>
+                    <select name="hero">
+                     <option value="s1" selected>Аэрофлот</option>
+                    </select> 
+                </form>
+            </li>
+            
+            <li>
+                <form>
+                    <p><strong>Город вылета</strong></p>
+                    <select name="hero">
+                        <option value="s1" selected>Город</option>
+                    </select> 
+                </form>
+            </li>
+            
+            <li>
+                <form>
+                    <p><strong>Город прилёта</strong></p>
+                    <select name="hero">
+                        <option value="s1" selected>Город</option>
+                    </select> 
+                </form>
+            </li>
+            
+            <li>
+                <form>
+                    <p><strong>Время вылета</strong></p>
+                    <select name="hero">
+                        <option value="s1" selected>Время</option>
+                    </select> 
+                </form>
+             </li>
+            
+            <li>
+                <form>
+                    <p><strong>Время прилета</strong></p>
+                    <select name="hero">
+                        <option value="s1" selected>Время</option>
+                    </select> 
+            </form>
+            </li>
+            
+        
+            <li>
+                <form>
+                    <p><strong>Данные о полёте</strong></p>
+                    <select name="hero">
+                        <option value="s1" selected>Модель воздушного судна</option>
+                        <option value="s2">Вылет</option>
+                        <option value="s3">Прилёт</option>
+                        <option value="s3">Залёт</option>
+                    </select> 
+                    <input type="submit" value="Отправить">
+                </form>
+            </li>
+         
+        </ul>
+    </nav>
+
+ <div class="folium-map" id="webmap" ></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.4.0/dist/leaflet.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <script src="webmap.js"></script>
+    <script src="airports.js"></script>
+    <script src="movingScript.js"></script>
+</body>
