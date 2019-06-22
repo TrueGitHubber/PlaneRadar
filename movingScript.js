@@ -35,6 +35,19 @@ function moveMarker(marker, coords)
 	return marker;
 };
 
+function drawTrajectory (latlngs) // latlngs - массив точек
+{
+//	var trajectoryLayer = L.canvas({ padding: 0.5 }); Canvas не нужен для нанесения линий.
+	
+
+	var trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
+};
+
+function deleteTrajectory ()
+{
+	trajectory.remove();
+};
+
 function updateInfoAboutPlanes(data)
 {
 	//alert("Success");
