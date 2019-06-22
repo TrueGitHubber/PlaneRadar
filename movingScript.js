@@ -51,6 +51,22 @@ function deleteTrajectory ()
 
 function updateInfoAboutPlanes(data)
 {
+	// var event = JSON.parse(data.result, function(key, value) {
+	// 	if (key == 'fligt') return new Flight(value);
+	// 	return value;
+	// });
+
+	var newFlight = [];
+
+	for (var i = 0; i < data.result.length; i++) {
+  		newFlight.push(data.result[i].flight);
+	}
+
+	// myJsonString = JSON.stringify(newFlight);
+
+	// console.log(event.flight.getFlight());
+	// console.log(myJsonString)
+
 	//alert("Success");
 	for(item of flights)
 	{
@@ -62,8 +78,10 @@ function updateInfoAboutPlanes(data)
 		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
 												  [data.result[i].latitude, data.result[i].longitude]
 												   ));
-		$('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
+		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
+	var select = document.querySelector('.flight_number');
+	select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
 };
 
 function readFile(filename)
