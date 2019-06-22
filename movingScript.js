@@ -7,11 +7,12 @@ function addMarker(marker, coords)
 {
 		var myIcon = L.icon({
 		iconUrl: 'Images/plane.png',
-		iconSize: [20, 27],
-		iconAnchor: [coords[0]-48, coords[1]],
+		iconSize: [25, 18],
+		iconAnchor: coords,
 		popupAnchor: coords,
 	});
-	    marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
+	makeTextPopUpOnMarker(marker, "Info about plane");
+	  marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
 		return marker;
 };
 
