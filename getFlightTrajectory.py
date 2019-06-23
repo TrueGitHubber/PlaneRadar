@@ -45,11 +45,22 @@ def getTrajectory(flightID):
             print(sys.exc_info())
             print(req.status_code)
             exit(1)
-    print(time.time()-t1)
+    print("Information received in: "+str(time.time()-t1)+" seconds")
 
+def getQuery():
+    f = open("choosenFlight.txt", "r", encoding = "utf-8")
+    lastQuery = f.read()
+    f.close()
+    return lastQuery
 if __name__ == "__main__":
-    try:
-        #getTrajectory("2100b8bb")
-        getTrajectory(sys.argv[1])
-    except:
-        print(sys.exc_info())
+    while(1):
+        newQuery = getQuery()
+        if(len(newQuery) == 8):
+            try:
+                print("Getting info about flight with id:"+newQuery)
+                getTrajectory(newQuery)
+                print("Success\n")
+                #getTrajectory(sys.argv[1])
+            except:
+                print(sys.exc_info())
+        time.sleep(1)
