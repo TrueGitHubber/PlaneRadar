@@ -14,24 +14,24 @@ function makeTextPopUpOnMarker(marker, str)
 	return marker;
 };
 
-function addMarker(marker, coords, angle)
+function addMarker(marker, coords)
 {
 	var myIcon = L.icon({
 	iconUrl: 'Images/plane.png',
 	iconSize: [25, 18],
-	iconAnchor: [12.5,9],
-	popupAnchor: [0, 0],
+	iconAnchor: [0,0],
+	popupAnchor: [12, 9],
 	});
 
-	marker = L.marker(coords, { icon: myIcon,  rotationAngle: angle}, ).addTo(webmap);
+	marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
 	marker = makeTextPopUpOnMarker(marker, "Info about plane");
 	return marker;
 };
 
-function moveMarker(marker, coords, angle)
+function moveMarker(marker, coords)
 {
 	deleteMarker(marker);
-	marker = addMarker(marker, coords, angle);
+	marker = addMarker(marker, coords);
 	return marker;
 };
 
@@ -40,7 +40,7 @@ function drawTrajectory (latlngs) // latlngs - массив точек
 //	var trajectoryLayer = L.canvas({ padding: 0.5 }); Canvas не нужен для нанесения линий.
 
 
-	trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
+	var trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
 };
 
 function deleteTrajectory ()
@@ -48,44 +48,7 @@ function deleteTrajectory ()
 	trajectory.remove();
 };
 
-function drawDashTrajectory (lat1, lng1, lat2, lng2){
-	var latlngs = [
-		[lat1, lng1],
-		[lat2, lng2],
-	];
-	var polylineOptions = {color: 'red', dashArray: '10, 10', dashOffset: '10'};
-	var dashTrajectory = L.polyline(latlngs, polylineOptions).addTo(webmap);
-};
 
-function delDashTrajectory (){
-	dashTrajectory.remove();
-};
-
-
-function updateTrajectory(data)
-{
-	deleteTrajectory();
-	data = data['result'];
-	drawTrajectory(data);
-}
-function readTrajectory()
-{
-	$.ajax({
-		type: "GET",
-		url: "trajectoryInfo.json",
-		dataType: "json",
-		success: updateTrajectory,
-		error: function(response)
-		{
-			console.log(response);
-			//alert("Fail");
-		}
-	});
-};
-function chooseNewPlane(id)
-{
-	//writeToFile(id)
-};
 function updateInfoAboutPlanes(data)
 {
 	// var event = JSON.parse(data.result, function(key, value) {
@@ -113,8 +76,7 @@ function updateInfoAboutPlanes(data)
 	for(let i = 0; i < data.result.length; i++)
 	{
 		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
-												    [data.result[i].latitude, data.result[i].longitude],
-													 data.result[i].direction
+												  [data.result[i].latitude, data.result[i].longitude]
 												   ));
 		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
@@ -135,13 +97,11 @@ function readFile(filename)
 			//alert("Fail");
 		}
 	});
-	readTrajectory()
 };
 
 
 var flights = new Map();
 
-var	trajectory = L.polyline([[0,0]], {color: 'red'}).addTo(webmap)
 var tile_layer_93dd622128d8481fa64fdfdefbba6b3b = L.tileLayer(
 	"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	{"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
@@ -181,4 +141,22 @@ $(document).ready(function ()
 		*/
 
 
+});
+
+
+$('#btn-send').on('click', function() {
+    var msg =$('#menu');
+    msg = msg.serializeArray();
+    console.log(msg);
+    $.ajax({
+        type: 'POST',
+        url: 'getData.php',
+        data: msg,
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(data) {
+            // console.log('error');            
+        }
+    });
 });
