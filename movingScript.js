@@ -1,25 +1,6 @@
 function deleteMarker(marker)
 {
-		webmap.removeLayer(marker);
-};
-
-function addMarker(marker, coords)
-{
-		var myIcon = L.icon({
-		iconUrl: 'Images/plane.png',
-		iconSize: [20, 27],
-		iconAnchor: [coords[0]-48, coords[1]],
-		popupAnchor: coords,
-	});
-	    marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
-		return marker;
-};
-
-function moveMarker(marker, coords)
-{
-	deleteMarker(marker);
-	marker = addMarker(marker, coords);
-	return marker;
+	webmap.removeLayer(marker);
 };
 
 function makeTextPopUpOnMarker(marker, str)
@@ -28,16 +9,35 @@ function makeTextPopUpOnMarker(marker, str)
 	var html_76c86b9bcf4f4a2b883ca84ba9396b50 = $(`<div id="html_76c86b9bcf4f4a2b883ca84ba9396b50" style="width: 100.0%; height: 100.0%;">`+str+`</div>`)[0];
 	popup_5deecb525dae45f4933ad13864d615c4.setContent(html_76c86b9bcf4f4a2b883ca84ba9396b50);
 
-
 	marker.bindPopup(popup_5deecb525dae45f4933ad13864d615c4);
-	
+
+	return marker;
+};
+
+function addMarker(marker, coords, angle)
+{
+	var myIcon = L.icon({
+	iconUrl: 'Images/plane.png',
+	iconSize: [25, 18],
+	iconAnchor: [0,0],
+	popupAnchor: [12, 9],
+	});
+
+	marker = L.marker(coords, { icon: myIcon,  rotationAngle: angle}, ).addTo(webmap);
+	marker = makeTextPopUpOnMarker(marker, "Info about plane");
+	return marker;
+};
+
+function moveMarker(marker, coords, angle)
+{
+	deleteMarker(marker);
+	marker = addMarker(marker, coords, angle);
 	return marker;
 };
 
 function drawTrajectory (latlngs) // latlngs - массив точек
 {
 //	var trajectoryLayer = L.canvas({ padding: 0.5 }); Canvas не нужен для нанесения линий.
-	
 
 	var trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
 };
@@ -59,8 +59,24 @@ function drawDashTrajectory (lat1, lng1, lat2, lng2){
 function delDashTrajectory (){
 	dashTrajectory.remove();
 };
+
 function updateInfoAboutPlanes(data)
 {
+	// var event = JSON.parse(data.result, function(key, value) {
+	// 	if (key == 'fligt') return new Flight(value);
+	// 	return value;
+	// });
+
+	var newFlight = [];
+
+	for (var i = 0; i < data.result.length; i++) {
+  		newFlight.push(data.result[i].flight);
+	}
+
+	// myJsonString = JSON.stringify(newFlight);
+
+	// console.log(event.flight.getFlight());
+	// console.log(myJsonString)
 	//alert("Success");
 	for(item of flights)
 	{
@@ -69,18 +85,21 @@ function updateInfoAboutPlanes(data)
 	flights.clear();
 	for(let i = 0; i < data.result.length; i++)
 	{
-		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight], 
-												  [data.result[i].latitude, data.result[i].longitude]
+		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
+												    [data.result[i].latitude, data.result[i].longitude],
+													 data.result[i].direction
 												   ));
+		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
+	var select = document.querySelector('.flight_number');
+	select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
 };
-		
-function readFile(filename) 
+
+function readFile(filename)
 {
-	$.ajax({ 
-		type: "GET", 
-		url: filename, 
-		//data: "data", 
+	$.ajax({
+		type: "GET",
+		url: filename,
 		dataType: "json",
 		success: updateInfoAboutPlanes,
 		error: function(response)
@@ -91,7 +110,6 @@ function readFile(filename)
 	});
 };
 
-	
 var flights = new Map();
 
 var tile_layer_93dd622128d8481fa64fdfdefbba6b3b = L.tileLayer(
@@ -116,22 +134,19 @@ var popup_5deecb525dae45f4933ad13864d615c4 = L.popup({"maxWidth": "100%"});
 
 var html_76c86b9bcf4f4a2b883ca84ba9396b50 = $(`<div id="html_76c86b9bcf4f4a2b883ca84ba9396b50" style="width: 100.0%; height: 100.0%;">Hrabrovo</div>`)[0];
 popup_5deecb525dae45f4933ad13864d615c4.setContent(html_76c86b9bcf4f4a2b883ca84ba9396b50);
-	
+
 
 flights["SU321"].bindPopup(popup_5deecb525dae45f4933ad13864d615c4)
-$(document).ready(function () 
+$(document).ready(function ()
 {
 	//var i = 0;
 	setInterval(readFile.bind(null, "nowPlanesInfo.json"), 3000);
-/*	$("#test").bind("click", function()
+	/*$("#test").toggle( function()
 	{
-
 	//	flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
 		//flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
 		readFile("nowPlanesInfo.json");
 		i=i+1;
-	});*/
-		
-
-	
+	});
+		*/
 });

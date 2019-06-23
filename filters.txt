@@ -1,0 +1,4 @@
+Airlines=Aeroflot&9 Air
+Departure=NRT
+Arrival=
+Flight=
