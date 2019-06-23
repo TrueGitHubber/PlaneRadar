@@ -182,3 +182,20 @@ $(document).ready(function ()
 
 
 });
+
+$('#btn-send').on('click', function() {
+    var msg =$('#menu');
+    msg = msg.serializeArray();
+    console.log(msg);
+    $.ajax({
+        type: 'POST',
+        url: 'writeFilters.php',
+        data: msg,
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(data) {
+            // console.log('error');            
+        }
+    });
+});
