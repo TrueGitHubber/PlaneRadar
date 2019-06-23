@@ -39,7 +39,6 @@ function drawTrajectory (latlngs) // latlngs - массив точек
 {
 //	var trajectoryLayer = L.canvas({ padding: 0.5 }); Canvas не нужен для нанесения линий.
 
-
 	trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
 };
 
@@ -86,6 +85,7 @@ function chooseNewPlane(id)
 {
 	//writeToFile(id)
 };
+
 function updateInfoAboutPlanes(data)
 {
 	// var event = JSON.parse(data.result, function(key, value) {
@@ -179,8 +179,6 @@ $(document).ready(function ()
 		i=i+1;
 	});
 		*/
-
-
 });
 
 $('#btn-send').on('click', function() {
