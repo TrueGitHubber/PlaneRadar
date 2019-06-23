@@ -11,5 +11,5 @@ foreach ($_POST as $key=>$value){
 	}
 	$outputString .= "\n";
 };
-file_put_contents('filename.txt', $outputString);
+file_put_contents('choosenFlight.txt', $outputString);
 ?>
