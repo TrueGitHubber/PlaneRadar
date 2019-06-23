@@ -150,6 +150,22 @@ function readFile(filename)
 	readTrajectory()
 };
 
+function choosePlaneColorbyFilter (msg){ // msg - массив, созданный фильтром
+	var count = 0;
+	msg.forEach(function(item, i, msg){
+		if(item['name'] == 'Airlines' && item['value'] != ""){ 
+			count = count + 1;
+		}
+	});
+	var planeNumber = "plane" + count + ".png";
+	if (count != 0){
+		return planeNumber;
+	}
+	else{						// Случай, если не выбраны авиакомпании, самолеты серые.
+		return "plane.png";
+	}
+};
+
 
 var flights = new Map();
 
@@ -200,7 +216,7 @@ $('#btn-send').on('click', function() {
     $.ajax({
         type: 'POST',
         url: 'writeFilters.php',
-        data: msg,
+		data: msg,
         success: function(data) {
             console.log(data);
         },
