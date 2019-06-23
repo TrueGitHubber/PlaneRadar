@@ -12,7 +12,7 @@ def writeDataPlanes(data):
         if(key != "full_count" and key != "version" and key != "stats"):
             formatJson["result"].append({})
             if(data[key][13] == ""):
-                data[key][13] = "None" + str(n)
+                data[key][13] = "_None" + str(n)
                 n += 1
             if(str(data[key][18]) == ""):
                 data[key][18] = None
@@ -22,6 +22,7 @@ def writeDataPlanes(data):
                 data[key][11] = None
             if(str(data[key][12]) == ""):
                 data[key][12] = None
+            formatJson["result"][i]["id"] = key
             formatJson["result"][i]["flight"] = data[key][13]
             formatJson["result"][i]["airline"] = data[key][18]
             formatJson["result"][i]["latitude"] = data[key][1]
@@ -33,6 +34,7 @@ def writeDataPlanes(data):
             formatJson["result"][i]["departure"] = data[key][11]
             formatJson["result"][i]["arrival"] = data[key][12]
             i+=1
+    formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
     formatJson = json.dumps(formatJson)
     f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
