@@ -14,7 +14,7 @@ function makeTextPopUpOnMarker(marker, str)
 	return marker;
 };
 
-function addMarker(marker, coords)
+function addMarker(marker, coords, angle)
 {
 	var myIcon = L.icon({
 	iconUrl: 'Images/plane.png',
@@ -23,15 +23,15 @@ function addMarker(marker, coords)
 	popupAnchor: [12, 9],
 	});
 
-	marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
+	marker = L.marker(coords, { icon: myIcon,  rotationAngle: angle}, ).addTo(webmap);
 	marker = makeTextPopUpOnMarker(marker, "Info about plane");
 	return marker;
 };
 
-function moveMarker(marker, coords)
+function moveMarker(marker, coords, angle)
 {
 	deleteMarker(marker);
-	marker = addMarker(marker, coords);
+	marker = addMarker(marker, coords, angle);
 	return marker;
 };
 
@@ -76,7 +76,8 @@ function updateInfoAboutPlanes(data)
 	for(let i = 0; i < data.result.length; i++)
 	{
 		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
-												  [data.result[i].latitude, data.result[i].longitude]
+												    [data.result[i].latitude, data.result[i].longitude],
+													 data.result[i].direction
 												   ));
 		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
