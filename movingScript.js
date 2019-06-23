@@ -20,7 +20,7 @@ function addMarker(marker, coords, angle)
 	iconUrl: 'Images/plane.png',
 	iconSize: [25, 18],
 	iconAnchor: [12.5,9],
-	popupAnchor: [12.5, 9],
+	popupAnchor: [0, 0],
 	});
 
 	marker = L.marker(coords, { icon: myIcon,  rotationAngle: angle}, ).addTo(webmap);
