@@ -45,6 +45,7 @@
             <div class="form-group">
                 <label>Авикомпании</label>
                 <select class="selectpicker form-control" id="airlines" name="Airlines" multiple data-live-search="true" >
+                    <option value="" selected ></option>
                     <option value="40-Mile Air" >40-Mile Air</option>
                     <option value="9 Air" >9 Air</option>
                     <option value="ABX Air" >ABX Air</option>
@@ -1391,7 +1392,8 @@
             <div class="form-group">
                 <label>Город вылета</label>
                 <select class="selectpicker form-control" name="Departure[]" multiple data-live-search="true">
-                    <option value="Москва" selected> Москва</option>
+				    <option value="" selected></option>
+                    <option value="Москва"> Москва</option>
                     <option value="2" >Питер</option>
                     <option value="3" >Калининград</option>
                     <option value="4" >Нью-Йорк</option>
@@ -1404,8 +1406,9 @@
             <div class="form-group">    
                 <label>Город прилёта</label>
                 <select class="selectpicker form-control" name="Arrival[]" multiple data-live-search="true">
+					<option value="" selected></option>
                     <option value="1" >Москва</option>
-                    <option value="Питер" selected>Питер</option>
+                    <option value="Питер">Питер</option>
                     <option value="3" >Калининград</option>
                     <option value="4" >Нью-Йорк</option>
                     <option value="5" >Саратов</option>
