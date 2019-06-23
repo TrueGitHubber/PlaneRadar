@@ -1,6 +1,6 @@
 function deleteMarker(marker)
 {
-		webmap.removeLayer(marker);
+	webmap.removeLayer(marker);
 };
 
 function makeTextPopUpOnMarker(marker, str)
@@ -10,22 +10,22 @@ function makeTextPopUpOnMarker(marker, str)
 	popup_5deecb525dae45f4933ad13864d615c4.setContent(html_76c86b9bcf4f4a2b883ca84ba9396b50);
 
 	marker.bindPopup(popup_5deecb525dae45f4933ad13864d615c4);
-	
+
 	return marker;
 };
 
 function addMarker(marker, coords)
 {
-		var myIcon = L.icon({
-		iconUrl: 'Images/plane.png',
-		iconSize: [25, 18],
-		iconAnchor: [0,0],
-		popupAnchor: [12, 9],
+	var myIcon = L.icon({
+	iconUrl: 'Images/plane.png',
+	iconSize: [25, 18],
+	iconAnchor: [0,0],
+	popupAnchor: [12, 9],
 	});
-	
-	  marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
-	  marker = makeTextPopUpOnMarker(marker, "Info about plane");
-		return marker;
+
+	marker = L.marker(coords, { icon: myIcon }).addTo(webmap);
+	marker = makeTextPopUpOnMarker(marker, "Info about plane");
+	return marker;
 };
 
 function moveMarker(marker, coords)
@@ -35,8 +35,38 @@ function moveMarker(marker, coords)
 	return marker;
 };
 
+function drawTrajectory (latlngs) // latlngs - массив точек
+{
+//	var trajectoryLayer = L.canvas({ padding: 0.5 }); Canvas не нужен для нанесения линий.
+
+
+	var trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
+};
+
+function deleteTrajectory ()
+{
+	trajectory.remove();
+};
+
+
 function updateInfoAboutPlanes(data)
 {
+	// var event = JSON.parse(data.result, function(key, value) {
+	// 	if (key == 'fligt') return new Flight(value);
+	// 	return value;
+	// });
+
+	var newFlight = [];
+
+	for (var i = 0; i < data.result.length; i++) {
+  		newFlight.push(data.result[i].flight);
+	}
+
+	// myJsonString = JSON.stringify(newFlight);
+
+	// console.log(event.flight.getFlight());
+	// console.log(myJsonString)
+
 	//alert("Success");
 	for(item of flights)
 	{
@@ -45,18 +75,20 @@ function updateInfoAboutPlanes(data)
 	flights.clear();
 	for(let i = 0; i < data.result.length; i++)
 	{
-		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight], 
+		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
 												  [data.result[i].latitude, data.result[i].longitude]
 												   ));
+		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
+	var select = document.querySelector('.flight_number');
+	select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
 };
-		
-function readFile(filename) 
+
+function readFile(filename)
 {
-	$.ajax({ 
-		type: "GET", 
-		url: filename, 
-		//data: "data", 
+	$.ajax({
+		type: "GET",
+		url: filename,
 		dataType: "json",
 		success: updateInfoAboutPlanes,
 		error: function(response)
@@ -67,7 +99,7 @@ function readFile(filename)
 	});
 };
 
-	
+
 var flights = new Map();
 
 var tile_layer_93dd622128d8481fa64fdfdefbba6b3b = L.tileLayer(
@@ -92,16 +124,15 @@ var popup_5deecb525dae45f4933ad13864d615c4 = L.popup({"maxWidth": "100%"});
 
 var html_76c86b9bcf4f4a2b883ca84ba9396b50 = $(`<div id="html_76c86b9bcf4f4a2b883ca84ba9396b50" style="width: 100.0%; height: 100.0%;">Hrabrovo</div>`)[0];
 popup_5deecb525dae45f4933ad13864d615c4.setContent(html_76c86b9bcf4f4a2b883ca84ba9396b50);
-	
+
 
 flights["SU321"].bindPopup(popup_5deecb525dae45f4933ad13864d615c4)
-$(document).ready(function () 
+$(document).ready(function ()
 {
 	//var i = 0;
 	setInterval(readFile.bind(null, "nowPlanesInfo.json"), 3000);
 	/*$("#test").toggle( function()
 	{
-
 	//	flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
 		//flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
 		readFile("nowPlanesInfo.json");
@@ -109,5 +140,23 @@ $(document).ready(function ()
 	});
 		*/
 
-	
+
+});
+
+
+$('#btn-send').on('click', function() {
+    var msg =$('#menu');
+    msg = msg.serializeArray();
+    console.log(msg);
+    $.ajax({
+        type: 'POST',
+        url: 'getData.php',
+        data: msg,
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(data) {
+            // console.log('error');            
+        }
+    });
 });
