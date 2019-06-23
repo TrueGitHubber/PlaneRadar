@@ -7,6 +7,7 @@ def getFilters():
     filters = {}
     f = open("filters.txt", "r", encoding = "utf-8")
     r = f.read().split('\n')
+    print(r)
     f.close()
     for filter in r:
         nameFilter, content =filter.split("=")
@@ -51,6 +52,7 @@ def writeDataPlanes(data):
             except:
                 continue
 
+
             formatJson["result"].append({})
 
             formatJson["result"][i]["id"] = key
@@ -66,6 +68,7 @@ def writeDataPlanes(data):
             formatJson["result"][i]["arrival"] = data[key][12]
             i+=1
     formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
+    print(formatJson)
     formatJson = json.dumps(formatJson)
     f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
