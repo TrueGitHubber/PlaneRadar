@@ -39,11 +39,16 @@ def writeDataPlanes(data):
                 data[key][12] = None
 
             try:
-                if data[key][18] == None or CodeToNameAirline[data[key][18]] not in filters["Airlines"]:
-                    continue
-                if
+                if(len(filters["Airlines"])>0):
+                    if data[key][18] == None or CodeToNameAirline[data[key][18]] not in filters["Airlines"]:
+                        continue
+                if len(filters["Departure"])>0:
+                    if data[key][11] == None or data[key][11] not in filters["Departure"]:
+                        continue
+                if len(filters["Arrival"])>0:
+                    if data[key][12] == None or data[key][12] not in filters["Arrival"]:
+                      continue
             except:
-                print("except")
                 continue
 
             formatJson["result"].append({})
