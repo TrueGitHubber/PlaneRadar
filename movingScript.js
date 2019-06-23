@@ -19,8 +19,8 @@ function addMarker(marker, coords, angle)
 	var myIcon = L.icon({
 	iconUrl: 'Images/plane.png',
 	iconSize: [25, 18],
-	iconAnchor: [0,0],
-	popupAnchor: [12, 9],
+	iconAnchor: [12.5,9],
+	popupAnchor: [12.5, 9],
 	});
 
 	marker = L.marker(coords, { icon: myIcon,  rotationAngle: angle}, ).addTo(webmap);
