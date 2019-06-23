@@ -39,7 +39,8 @@ function drawTrajectory (latlngs) // latlngs - массив точек
 {
 //	var trajectoryLayer = L.canvas({ padding: 0.5 }); Canvas не нужен для нанесения линий.
 
-	var trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
+
+	trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
 };
 
 function deleteTrajectory ()
@@ -60,6 +61,31 @@ function delDashTrajectory (){
 	dashTrajectory.remove();
 };
 
+
+function updateTrajectory(data)
+{
+	deleteTrajectory();
+	data = data['result'];
+	drawTrajectory(data);
+}
+function readTrajectory()
+{
+	$.ajax({
+		type: "GET",
+		url: "trajectoryInfo.json",
+		dataType: "json",
+		success: updateTrajectory,
+		error: function(response)
+		{
+			console.log(response);
+			//alert("Fail");
+		}
+	});
+};
+function chooseNewPlane(id)
+{
+	//writeToFile(id)
+};
 function updateInfoAboutPlanes(data)
 {
 	// var event = JSON.parse(data.result, function(key, value) {
@@ -77,6 +103,7 @@ function updateInfoAboutPlanes(data)
 
 	// console.log(event.flight.getFlight());
 	// console.log(myJsonString)
+
 	//alert("Success");
 	for(item of flights)
 	{
@@ -108,10 +135,13 @@ function readFile(filename)
 			//alert("Fail");
 		}
 	});
+	readTrajectory()
 };
+
 
 var flights = new Map();
 
+var	trajectory = L.polyline([[0,0]], {color: 'red'}).addTo(webmap)
 var tile_layer_93dd622128d8481fa64fdfdefbba6b3b = L.tileLayer(
 	"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	{"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
@@ -149,4 +179,6 @@ $(document).ready(function ()
 		i=i+1;
 	});
 		*/
+
+
 });
