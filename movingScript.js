@@ -81,9 +81,21 @@ function readTrajectory()
 		}
 	});
 };
+
 function chooseNewPlane(id)
 {
-	//writeToFile(id)
+	var dictForWriting = {"result":id};
+	$.ajax({
+        type: 'POST',
+        url: 'writeChoosenFlight.php',
+        data: dictForWriting,
+        success: function(data) {
+            console.log(data);
+        },
+        error: function(data) {
+            // console.log('error');            
+        }
+    });
 };
 
 function updateInfoAboutPlanes(data)
