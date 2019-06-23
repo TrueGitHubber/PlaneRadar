@@ -65,7 +65,6 @@ def writeDataPlanes(data):
             formatJson["result"][i]["departure"] = data[key][11]
             formatJson["result"][i]["arrival"] = data[key][12]
             i+=1
-    print(formatJson)
     formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
     formatJson = json.dumps(formatJson)
     f = open("nowPlanesInfo.json", "w", encoding = "utf-8")

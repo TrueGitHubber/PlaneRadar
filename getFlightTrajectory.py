@@ -4,20 +4,31 @@ import time
 import sys
 from requests import get
 
+def lastPoint():
+    f = open("nowPlanesInfo.json", "r", encoding = "utf-8")
+    newDict = f.read()
+    f.close()
+    newDict = json.loads(newDict)
+    allFlights = newDict['result']
+    for flight in allFlights:
+        if(flight['id'] == newQuery):
+            return [flight["latitude"], flight["longitude"]]
+    exit(2)
 def writeDataPlanes(data):
-    formatJson = {}
+    formatJson ={}
     formatJson["result"] = []
     i = 0
     n = 1
     for el in reversed(data["trail"]):
-        formatJson["result"].append({})
+        formatJson["result"].append([el["lat"], el["lng"]])
 
-        formatJson["result"][i]["latitude"] = el["lat"]
-        formatJson["result"][i]["longitude"] = el["lng"]
-        formatJson["result"][i]["direction"] = el["hd"]
-        formatJson["result"][i]["height"] = el["alt"]
-        formatJson["result"][i]["speed"] = el["spd"]
+        #formatJson["result"][i]["latitude"] = el["lat"]
+       # formatJson["result"][i]["longitude"] = el["lng"]
+       # formatJson["result"][i]["direction"] = el["hd"]
+       # formatJson["result"][i]["height"] = el["alt"]
+       # formatJson["result"][i]["speed"] = el["spd"]
         i+=1
+    formatJson["result"].append(lastPoint())
     formatJson = json.dumps(formatJson)
     f = open("trajectoryInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
