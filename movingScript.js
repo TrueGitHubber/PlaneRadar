@@ -48,6 +48,20 @@ function deleteTrajectory ()
 	trajectory.remove();
 };
 
+function drawDashTrajectory (lat1, lng1, lat2, lng2){
+	var latlngs = [
+		[lat1, lng1],
+		[lat2, lng2],
+	];
+	var polylineOptions = {color: 'red', dashArray: '10, 10', dashOffset: '10'};
+	var dashTrajectory = L.polyline(latlngs, polylineOptions).addTo(webmap);
+};
+
+function delDashTrajectory (){
+	dashTrajectory.remove();
+};
+
+
 function updateTrajectory(data)
 {
 	deleteTrajectory();
