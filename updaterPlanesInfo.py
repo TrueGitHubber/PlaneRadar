@@ -3,14 +3,29 @@ import sys
 import json
 import time
 
+def getFilters():
+    filters = {}
+    f = open("filters.txt", "r", encoding = "utf-8")
+    r = f.read().split('\n')
+    f.close()
+    for filter in r:
+        nameFilter, content =filter.split("=")
+        filters[nameFilter]=[]
+        if content == "":
+            continue
+        for el in content.split("&"):
+            filters[nameFilter].append(el)
+    return filters
+
+
 def writeDataPlanes(data):
     formatJson = {}
     formatJson["result"] = []
     i = 0
     n = 1
+    filters = getFilters()
     for key in data:
         if(key != "full_count" and key != "version" and key != "stats"):
-            formatJson["result"].append({})
             if(data[key][13] == ""):
                 data[key][13] = "_None" + str(n)
                 n += 1
@@ -22,6 +37,17 @@ def writeDataPlanes(data):
                 data[key][11] = None
             if(str(data[key][12]) == ""):
                 data[key][12] = None
+
+            try:
+                if data[key][18] == None or CodeToNameAirline[data[key][18]] not in filters["Airlines"]:
+                    continue
+                if
+            except:
+                print("except")
+                continue
+
+            formatJson["result"].append({})
+
             formatJson["result"][i]["id"] = key
             formatJson["result"][i]["flight"] = data[key][13]
             formatJson["result"][i]["airline"] = data[key][18]
@@ -34,6 +60,7 @@ def writeDataPlanes(data):
             formatJson["result"][i]["departure"] = data[key][11]
             formatJson["result"][i]["arrival"] = data[key][12]
             i+=1
+    print(formatJson)
     formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
     formatJson = json.dumps(formatJson)
     f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
@@ -61,7 +88,15 @@ def getPlanes():
             exit(1)
     print(time.time()-t1)
 
+def readDict(pathToFile):
+    f = open(pathToFile, "r", encoding = "utf-8")
+    newDict = f.read()
+    f.close()
+    newDict = json.loads(newDict)
+    return newDict
+
 if __name__ == "__main__":
+    CodeToNameAirline = readDict("converterCodeToNameAirline.txt")
     while(1):
         try:
             getPlanes()
