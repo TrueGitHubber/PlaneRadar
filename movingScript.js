@@ -81,6 +81,8 @@ function updateTrajectory(data)
 	data = data['result'];
 	drawTrajectory(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
+	var select = document.querySelector('.airline');
+	select.innerHTML = '<span value="'+data['airline']+'">'+data['airline']+'</option>)';
 }
 function readTrajectory()
 {
