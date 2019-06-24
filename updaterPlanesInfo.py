@@ -67,12 +67,12 @@ def proFilters(data,formatJson, i, n):
             formatJson["result"][i]["departure"] = data[key][11]
             formatJson["result"][i]["arrival"] = data[key][12]
             i += 1
-    return formatJson
+    return formatJson, i, n
 
 
 def writeDataPlanes(data):
     formatJson = simpeFilters(data)
-    print(formatJson)
+
     f = open("nowPlanesInfo.json", "w", encoding="utf-8")
     f.write(formatJson)
     f.close()
@@ -176,6 +176,7 @@ def getProPlanes():
         for filterValue in filters[filterName]:
             if(filterName == "Airlines"):
                 url = "https://data-live.flightradar24.com/zones/fcgi/feed.js?callsign="+NameAirlineToCode[filterValue]
+
             elif(filterName == "Arrival"):
                 url = "https://data-live.flightradar24.com/zones/fcgi/feed.js?to="+filterValue
             elif(filterName == "Departure"):
@@ -189,8 +190,7 @@ def getProPlanes():
                 headers["user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
                 req = get(url, headers = headers, timeout = 10)
                 data = req.json()
-                formatJson = proFilters(data,formatJson,i,n)
-                print(data)
+                formatJson, i, n = proFilters(data,formatJson,i,n)
                 #time.sleep(3-(time.time()-t1-0.0005))
             except:
                 if "ReadTimeout" in str(sys.exc_info()):
@@ -202,8 +202,7 @@ def getProPlanes():
                     print(sys.exc_info())
                     print(req.status_code)
                     exit(1)
-            print(time.time()-t1)
-    formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
+   # formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
     formatJson = json.dumps(formatJson)
 
     f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
@@ -211,6 +210,7 @@ def getProPlanes():
     f.close()
 
     time.sleep(3 - (time.time() - t1 - 0.0005))
+    print(time.time() - t1)
 
 if __name__ == "__main__":
     CodeToNameAirline = readDict("converterCodeToNameAirline.txt")
