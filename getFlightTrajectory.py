@@ -69,6 +69,10 @@ if __name__ == "__main__":
         if(len(newQuery) == 8):
             try:
                 print("Getting info about flight with id:"+newQuery)
+                if newQuery == "stop":
+                    f = open("trajectoryInfo.json", "w", encoding="utf-8")
+                    f.close()
+                    continue
                 getTrajectory(newQuery)
                 print("Success\n")
                 #getTrajectory(sys.argv[1])
