@@ -77,7 +77,7 @@ function delDashTrajectory (){
 function updateTrajectory(data)
 {
 	deleteTrajectory();
-	data = data['result'];
+	data = data['result']['trail'];
 	drawTrajectory(data);
 }
 function readTrajectory()

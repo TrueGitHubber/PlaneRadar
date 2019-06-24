@@ -16,11 +16,12 @@ def lastPoint():
     exit(2)
 def writeDataPlanes(data):
     formatJson ={}
-    formatJson["result"] = []
+    formatJson["result"] = {}
+    formatJson["result"]["trail"] = []
     i = 0
     n = 1
     for el in reversed(data["trail"]):
-        formatJson["result"].append([el["lat"], el["lng"]])
+        formatJson["result"]["trail"].append([el["lat"], el["lng"]])
 
         #formatJson["result"][i]["latitude"] = el["lat"]
        # formatJson["result"][i]["longitude"] = el["lng"]
@@ -28,7 +29,7 @@ def writeDataPlanes(data):
        # formatJson["result"][i]["height"] = el["alt"]
        # formatJson["result"][i]["speed"] = el["spd"]
         i+=1
-    formatJson["result"].append(lastPoint())
+    formatJson["result"]["trail"].append(lastPoint())
     formatJson = json.dumps(formatJson)
     f = open("trajectoryInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
