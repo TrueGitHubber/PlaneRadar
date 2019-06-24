@@ -14,13 +14,19 @@ def lastPoint():
         if(flight['id'] == newQuery):
             return [flight["latitude"], flight["longitude"]]
     exit(2)
+
+def getTime(a):
+    if (a == None):
+        return a
+    return time.ctime(int(a))
 def writeDataPlanes(data):
     formatJson ={}
-    formatJson["result"] = []
+    formatJson["result"] = {}
+    formatJson["result"]["trail"] = []
     i = 0
     n = 1
     for el in reversed(data["trail"]):
-        formatJson["result"].append([el["lat"], el["lng"]])
+        formatJson["result"]["trail"].append([el["lat"], el["lng"]])
 
         #formatJson["result"][i]["latitude"] = el["lat"]
        # formatJson["result"][i]["longitude"] = el["lng"]
@@ -28,7 +34,27 @@ def writeDataPlanes(data):
        # formatJson["result"][i]["height"] = el["alt"]
        # formatJson["result"][i]["speed"] = el["spd"]
         i+=1
-    formatJson["result"].append(lastPoint())
+    formatJson["airline"] = data["airline"]["name"]
+    formatJson["aircraftModel"] = data["aircraft"]["model"]["text"]
+    formatJson["flightNumber"] = data["identification"]["number"]["default"]
+    formatJson["scheduledDeparture"] = data["time"]["scheduled"]["departure"]
+    formatJson["scheduledDeparture"] = getTime(formatJson["scheduledDeparture"])
+
+    formatJson["scheduledArrival"] = data["time"]["scheduled"]["arrival"]
+    formatJson["scheduledArrival"] = getTime(formatJson["scheduledArrival"])
+
+    formatJson["realDeparture"] = data["time"]["real"]["departure"]
+    formatJson["realDeparture"] = getTime(formatJson["realDeparture"])
+
+    formatJson["realArrival"] = data["time"]["real"]["arrival"]
+    formatJson["realArrival"] = getTime(formatJson["realArrival"])
+
+    formatJson["estimatedArrival"] = data["time"]["estimated"]["arrival"]
+    formatJson["estimatedArrival"] = getTime(formatJson["estimatedArrival"])
+    formatJson["airportDeparture"] = data["airport"]["origin"]["name"]
+    formatJson["airportArrival"] = data["airport"]["destination"]["name"]
+    formatJson["coordsAirportArrival"] = [data["airport"]["destination"]["position"]["latitude"], data["airport"]["destination"]["position"]["longitude"]]
+    formatJson["result"]["trail"].append(lastPoint())
     formatJson = json.dumps(formatJson)
     f = open("trajectoryInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
