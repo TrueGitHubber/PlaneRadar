@@ -34,26 +34,26 @@ def writeDataPlanes(data):
        # formatJson["result"][i]["height"] = el["alt"]
        # formatJson["result"][i]["speed"] = el["spd"]
         i+=1
-    formatJson["airline"] = data["airline"]["name"]
-    formatJson["aircraftModel"] = data["aircraft"]["model"]["text"]
-    formatJson["flightNumber"] = data["identification"]["number"]["default"]
-    formatJson["scheduledDeparture"] = data["time"]["scheduled"]["departure"]
-    formatJson["scheduledDeparture"] = getTime(formatJson["scheduledDeparture"])
+    formatJson["result"]["airline"] = data["airline"]["name"]
+    formatJson["result"]["aircraftModel"] = data["aircraft"]["model"]["text"]
+    formatJson["result"]["flightNumber"] = data["identification"]["number"]["default"]
+    formatJson["result"]["scheduledDeparture"] = data["time"]["scheduled"]["departure"]
+    formatJson["result"]["scheduledDeparture"] = getTime(formatJson["result"]["scheduledDeparture"])
 
-    formatJson["scheduledArrival"] = data["time"]["scheduled"]["arrival"]
-    formatJson["scheduledArrival"] = getTime(formatJson["scheduledArrival"])
+    formatJson["result"]["scheduledArrival"] = data["time"]["scheduled"]["arrival"]
+    formatJson["result"]["scheduledArrival"] = getTime(formatJson["result"]["scheduledArrival"])
 
-    formatJson["realDeparture"] = data["time"]["real"]["departure"]
-    formatJson["realDeparture"] = getTime(formatJson["realDeparture"])
+    formatJson["result"]["realDeparture"] = data["time"]["real"]["departure"]
+    formatJson["result"]["realDeparture"] = getTime(formatJson["result"]["realDeparture"])
 
-    formatJson["realArrival"] = data["time"]["real"]["arrival"]
-    formatJson["realArrival"] = getTime(formatJson["realArrival"])
+    formatJson["result"]["realArrival"] = data["time"]["real"]["arrival"]
+    formatJson["result"]["realArrival"] = getTime(formatJson["result"]["realArrival"])
 
-    formatJson["estimatedArrival"] = data["time"]["estimated"]["arrival"]
-    formatJson["estimatedArrival"] = getTime(formatJson["estimatedArrival"])
-    formatJson["airportDeparture"] = data["airport"]["origin"]["name"]
-    formatJson["airportArrival"] = data["airport"]["destination"]["name"]
-    formatJson["coordsAirportArrival"] = [data["airport"]["destination"]["position"]["latitude"], data["airport"]["destination"]["position"]["longitude"]]
+    formatJson["result"]["estimatedArrival"] = data["time"]["estimated"]["arrival"]
+    formatJson["result"]["estimatedArrival"] = getTime(formatJson["result"]["estimatedArrival"])
+    formatJson["result"]["airportDeparture"] = data["airport"]["origin"]["name"]
+    formatJson["result"]["airportArrival"] = data["airport"]["destination"]["name"]
+    formatJson["result"]["coordsAirportArrival"] = [data["airport"]["destination"]["position"]["latitude"], data["airport"]["destination"]["position"]["longitude"]]
     formatJson["result"]["trail"].append(lastPoint())
     formatJson = json.dumps(formatJson)
     f = open("trajectoryInfo.json", "w", encoding = "utf-8")

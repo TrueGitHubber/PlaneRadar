@@ -32,6 +32,7 @@
             height: 100%;
             width: 20%;
             color:  #663300;
+			            overflow: scroll;
             /* border:  2px solid pink; */
         }
 
