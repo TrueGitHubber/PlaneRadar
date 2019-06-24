@@ -65,8 +65,8 @@ function drawDashTrajectory (lat1, lng1, lat2, lng2){
 		[lat1, lng1],
 		[lat2, lng2],
 	];
-	var polylineOptions = {color: 'red', dashArray: '10, 10', dashOffset: '10'};
-	var dashTrajectory = L.polyline(latlngs, polylineOptions).addTo(webmap);
+	polylineOptions = {color: 'red', dashArray: '10, 10', dashOffset: '10'};
+	dashTrajectory = L.polyline(latlngs, polylineOptions).addTo(webmap);
 };
 
 function delDashTrajectory (){
@@ -76,9 +76,11 @@ function delDashTrajectory (){
 
 function updateTrajectory(data)
 {
+	delDashTrajectory();
 	deleteTrajectory();
-	data = data['result']['trail'];
-	drawTrajectory(data);
+	data = data['result'];
+	drawTrajectory(data['trail']);
+	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
 }
 function readTrajectory()
 {
@@ -162,8 +164,8 @@ flights.set(data.result[i].flight, marker);
 			wasClick.set(data.result[i].id, 0);	
 		};
 	};
-	var select = document.querySelector('.flight_number');
-	select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
+	//var select = document.querySelector('.flight_number');
+	//select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
 };
 
 function readFile(filename)
@@ -203,6 +205,8 @@ var flights = new Map();
 var ids = new Map();
 var wasClick = new Map();
 var	trajectory = L.polyline([[0,0]], {color: 'red'}).addTo(webmap);
+var polylineOptions = {color: 'red', dashArray: '10, 10', dashOffset: '10'};
+var dashTrajectory = L.polyline([[0,0]], polylineOptions).addTo(webmap);
 
 var tile_layer_93dd622128d8481fa64fdfdefbba6b3b = L.tileLayer(
 	"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",

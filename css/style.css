@@ -27,6 +27,7 @@ html, body {
     top: -100%;
 }
 
+<<<<<<< HEAD
 nav {
     background: #e0ffff;
     height: 100%;
@@ -34,6 +35,16 @@ nav {
     color:  #663300;
     overflow: scroll;
 }
+=======
+        nav {
+            background: #e0ffff;
+            height: 100%;
+            width: 20%;
+            color:  #663300;
+			            overflow: scroll;
+            /* border:  2px solid pink; */
+        }
+>>>>>>> 9bfec6e4a7060c14c98b13c4131385270fac76c3
 
 label {
     margin-left: 5px;
