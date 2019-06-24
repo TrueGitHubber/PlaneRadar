@@ -6,76 +6,72 @@
             left:0;
         } */
         
-        html, body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 
-        #webmap {
-            display: -webkit-flex;
-            display: -moz-flex;
-            display: -ms-flex;
-            display: -o-flex;
-            display: flex;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            left: 20.0%;
-            top: -100%;
-        }
+#webmap {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    left: 20.0%;
+    top: -100%;
+}
 
-        nav {
-            background: #e0ffff;
-            height: 100%;
-            width: 20%;
-            color:  #663300;
-            /* border:  2px solid pink; */
-        }
+nav {
+    background: #e0ffff;
+    height: 100%;
+    width: 20%;
+    color:  #663300;
+    overflow: scroll;
+}
 
-        label {
-            margin-left: 5px;
-        }
-            
-      /*   input {
-            border:  3px !important; 
-        } */
+label {
+    margin-left: 5px;
+}
 
-        .logo {
-            max-width: 100%;   
-            display: -webkit-flex;
-            display: -moz-flex;
-            display: -ms-flex;
-            display: -o-flex;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
+.logo {
+    max-width: 100%;   
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
 
-        .map {
-            display:  flex;
-        }
+.map {
+    display:  flex;
+}
 
-        .data-about-flight {
-            border: 2px solid gray;
-            width: 100%; !important;
-        }
+.data-about-flight {
+    border: 2px solid gray;
+    width: 100%; !important;
+}
 
-        .title-main {
-            display: flex;
-            text-align:  center;
-            justify-content: center;
-            font-size: 24px;
-        }
+.title-main {
+    display: flex;
+    text-align:  center;
+    justify-content: center;
+    font-size: 24px;
+}
 
-        .block-info {
-            display: flex;
-            flex-direction: column;
-        }
+.block-info {
+    display: flex;
+    flex-direction: column;
+}
 
-        .title-second {
-            font-weight: bold !important;
-            font-size: 18px;
-        }
+.title-second {
+    font-weight: bold !important;
+    font-size: 18px;
+}
