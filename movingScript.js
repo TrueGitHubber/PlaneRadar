@@ -34,7 +34,6 @@ function addMarker(marker, coords, angle, iconName)
 		}
 		else
 		{
-			deleteTrajectory();
 			chooseNewPlane("stop");	
 			wasClick.set(ids.get(String(e.target._leaflet_id)), 0);
 		};
