@@ -57,3 +57,25 @@
         .map {
             display:  flex;
         }
+
+        .data-about-flight {
+            border: 2px solid gray;
+            width: 100%; !important;
+        }
+
+        .title-main {
+            display: flex;
+            text-align:  center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .block-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title-second {
+            font-weight: bold !important;
+            font-size: 18px;
+        }
