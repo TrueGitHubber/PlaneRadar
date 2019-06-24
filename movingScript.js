@@ -14,10 +14,10 @@ function makeTextPopUpOnMarker(marker, str)
 	return marker;
 };
 
-function addMarker(marker, coords, angle)
+function addMarker(marker, coords, angle, iconName)
 {
 	var myIcon = L.icon({
-	iconUrl: 'Images/plane.png',
+	iconUrl: 'Images/' + iconName,
 	iconSize: [25, 18],
 	iconAnchor: [12.5,9],
 	popupAnchor: [0, 0],
@@ -122,11 +122,23 @@ function updateInfoAboutPlanes(data)
 		deleteMarker(item[1]);
 	}
 	flights.clear();
+	var filter =$('#menu');
+    filter = filter.serializeArray();
+	var count = 0;
+	if(filter[0].name != ""){
+		count = 1;
+	}
 	for(let i = 0; i < data.result.length; i++)
 	{
+		var color = "plane.png";
+		filter.forEach(function(item, j, filter){
+		if(item['name'] == 'Airlines' && item['value'] == data.result[i].airline){ 
+			color = "plane" + j + count + ".png";
+		}
+	});
 		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
 												    [data.result[i].latitude, data.result[i].longitude],
-													 data.result[i].direction
+													 data.result[i].direction, color
 												   ));
 		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
