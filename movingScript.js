@@ -14,10 +14,10 @@ function makeTextPopUpOnMarker(marker, str)
 	return marker;
 };
 
-function addMarker(marker, coords, angle)
+function addMarker(marker, coords, angle, iconName)
 {
 	var myIcon = L.icon({
-	iconUrl: 'Images/plane.png',
+	iconUrl: 'Images/' + iconName,
 	iconSize: [25, 18],
 	iconAnchor: [12.5,9],
 	popupAnchor: [0, 0],
@@ -136,20 +136,32 @@ function updateInfoAboutPlanes(data)
 		deleteMarker(item[1]);
 	}
 	flights.clear();
-	ids.clear();
-	for(let i = 0; i < data.result.length; i++)
+  ids.clear();
+  var filter =$('#menu');
+    filter = filter.serializeArray();
+	var count = 0;
+	if(filter[0].value != ""){
+		count = 1;
+  }
+  for(let i = 0; i < data.result.length; i++)
 	{
-		marker = addMarker(flights[data.result[i].flight],
+    var color = "plane.png";
+		filter.forEach(function(item, j, filter){
+		if(item['name'] == 'Airlines[]' && item['value'] == data.result[i].airline){ 
+			var jcount = count +  j;
+			color = "plane" + jcount + ".png";
+		}
+	});
+marker = addMarker(flights[data.result[i].flight],
 			[data.result[i].latitude, data.result[i].longitude],
-			 data.result[i].direction
+			 data.result[i].direction, color
 		   );
-		flights.set(data.result[i].flight, marker);
+flights.set(data.result[i].flight, marker);
 		ids.set(String(marker._leaflet_id), data.result[i].id);
 		if(typeof wasClick.get(data.result[i].id) === "undefined")
 		{
 			wasClick.set(data.result[i].id, 0);	
 		};
-		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
 	var select = document.querySelector('.flight_number');
 	select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
