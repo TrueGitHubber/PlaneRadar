@@ -125,14 +125,14 @@ function updateInfoAboutPlanes(data)
 	var filter =$('#menu');
     filter = filter.serializeArray();
 	var count = 0;
-	if(filter[0].name != ""){
+	if(filter[0].value != ""){
 		count = 1;
 	}
 	for(let i = 0; i < data.result.length; i++)
 	{
 		var color = "plane.png";
 		filter.forEach(function(item, j, filter){
-		if(item['name'] == 'Airlines' && item['value'] == data.result[i].airline){ 
+		if(item['name'] == 'Airlines[]' && item['value'] == data.result[i].airline){ 
 			var jcount = count +  j;
 			color = "plane" + jcount + ".png";
 		}
