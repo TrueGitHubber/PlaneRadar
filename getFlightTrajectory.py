@@ -66,16 +66,16 @@ def getQuery():
 if __name__ == "__main__":
     while(1):
         newQuery = getQuery()
-        if(len(newQuery) == 8):
-            try:
-                print("Getting info about flight with id:"+newQuery)
-                if newQuery == "stop":
-                    f = open("trajectoryInfo.json", "w", encoding="utf-8")
-                    f.close()
-                    continue
-                getTrajectory(newQuery)
-                print("Success\n")
-                #getTrajectory(sys.argv[1])
-            except:
-                print(sys.exc_info())
+        try:
+            print("Getting info about flight with id:"+newQuery)
+            if newQuery == "stop":
+                f = open("trajectoryInfo.json", "w", encoding="utf-8")
+                f.write('{"result": [[0,0]]}')
+                f.close()
+                continue
+            getTrajectory(newQuery)
+            print("Success\n")
+            #getTrajectory(sys.argv[1])
+        except:
+            print(sys.exc_info())
         time.sleep(1)

@@ -1,3 +1,4 @@
-Airlines=Aeroflot&UTair&UTair Cargo&UTair-Express
+Airlines=Aeroflot&Japan Airlines
 Departure=
 Arrival=
+Flight=JL1

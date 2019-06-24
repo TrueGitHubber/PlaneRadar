@@ -28,15 +28,15 @@ function addMarker(marker, coords, angle)
 	
 	marker.on('click', function(e){
 
-		if(wasClick.get(String(e.target._leaflet_id)) == 0){
+		if(wasClick.get(ids.get(String(e.target._leaflet_id))) == 0){
 			chooseNewPlane(ids.get(String(e.target._leaflet_id)));
-			wasClick.set(String(e.target._leaflet_id), 1);
+			wasClick.set(ids.get(String(e.target._leaflet_id)), 1);
 		}
 		else
 		{
 			deleteTrajectory();
 			chooseNewPlane("stop");	
-			wasClick.set(String(e.target._leaflet_id), 0);
+			wasClick.set(ids.get(String(e.target._leaflet_id)), 0);
 		};
 	});
 	return marker;
@@ -137,7 +137,6 @@ function updateInfoAboutPlanes(data)
 	}
 	flights.clear();
 	ids.clear();
-	wasClick.clear();
 	for(let i = 0; i < data.result.length; i++)
 	{
 		marker = addMarker(flights[data.result[i].flight],
@@ -146,7 +145,10 @@ function updateInfoAboutPlanes(data)
 		   );
 		flights.set(data.result[i].flight, marker);
 		ids.set(String(marker._leaflet_id), data.result[i].id);
-		wasClick.set(String(marker._leaflet_id), 0);	
+		if(typeof wasClick.get(data.result[i].id) === "undefined")
+		{
+			wasClick.set(data.result[i].id, 0);	
+		};
 		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
 	};
 	var select = document.querySelector('.flight_number');
