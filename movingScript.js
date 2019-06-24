@@ -133,7 +133,8 @@ function updateInfoAboutPlanes(data)
 		var color = "plane.png";
 		filter.forEach(function(item, j, filter){
 		if(item['name'] == 'Airlines' && item['value'] == data.result[i].airline){ 
-			color = "plane" + j + count + ".png";
+			var jcount = count +  j;
+			color = "plane" + jcount + ".png";
 		}
 	});
 		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
