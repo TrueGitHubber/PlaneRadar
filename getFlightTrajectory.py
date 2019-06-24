@@ -34,6 +34,9 @@ def writeDataPlanes(data):
        # formatJson["result"][i]["height"] = el["alt"]
        # formatJson["result"][i]["speed"] = el["spd"]
         i+=1
+    formatJson["result"]["speed"] = data["trail"][0]["spd"]
+    formatJson["result"]["height"] = data["trail"][0]["alt"]
+
     formatJson["result"]["airline"] = data["airline"]["name"]
     formatJson["result"]["aircraftModel"] = data["aircraft"]["model"]["text"]
     formatJson["result"]["aircraftID"] = data["aircraft"]["hex"]
