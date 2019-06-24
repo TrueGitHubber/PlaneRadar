@@ -24,7 +24,7 @@ function addMarker(marker, coords, angle, iconName)
 	});
 
 	marker = L.marker(coords, { icon: myIcon,  rotationAngle: angle}, ).addTo(webmap);
-	marker = makeTextPopUpOnMarker(marker, "Info about plane");
+	//marker = makeTextPopUpOnMarker(marker, "Info about plane");
 	
 	marker.on('click', function(e){
 
@@ -81,8 +81,32 @@ function updateTrajectory(data)
 	data = data['result'];
 	drawTrajectory(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
-	var select = document.querySelector('.airline');
-	select.innerHTML = '<span value="'+data['airline']+'">'+data['airline']+'</option>)';
+	var select = document.querySelector('#airline');
+	select.innerHTML = '<span value="">Авиакомпания : '+data['airline']+'</option>';
+	
+	select = document.querySelector('#aircraftModel');
+	select.innerHTML = '<span value="">Модель судна : '+data['aircraftModel']+'</option>';
+	
+	select = document.querySelector('#numberFlight');
+	select.innerHTML = '<span value="">Номер рейса : '+data['flightNumber']+'</option>';
+	
+	select = document.querySelector('#scheduledDeparture');
+	select.innerHTML = '<span value="">Время вылета по расписанию : '+data['scheduledDeparture']+'</option>';
+	
+	select = document.querySelector('#realDeparture');
+	select.innerHTML = '<span value="">Время вылета фактическое : '+data['realDeparture']+'</option>';
+	
+	select = document.querySelector('#airportDeparture');
+	select.innerHTML = '<span value="">Аэропорт отправления : '+data['airportDeparture']+'</option>';
+	
+	select = document.querySelector('#scheduledArrival');
+	select.innerHTML = '<span value="">Время вылета по расписанию : '+data['scheduledArrival']+'</option>';
+	
+	select = document.querySelector('#estimatedArrival');
+	select.innerHTML = '<span value="">Время прилёта ожидаемое : '+data['estimatedArrival']+'</option>';
+	
+	select = document.querySelector('#airportArrival');
+	select.innerHTML = '<span value="">Аэропорт прибытия : '+data['airportArrival']+'</option>';
 }
 function readTrajectory()
 {
