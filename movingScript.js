@@ -25,6 +25,20 @@ function addMarker(marker, coords, angle, iconName)
 
 	marker = L.marker(coords, { icon: myIcon,  rotationAngle: angle}, ).addTo(webmap);
 	marker = makeTextPopUpOnMarker(marker, "Info about plane");
+	
+	marker.on('click', function(e){
+
+		if(wasClick.get(ids.get(String(e.target._leaflet_id))) == 0){
+			chooseNewPlane(ids.get(String(e.target._leaflet_id)));
+			wasClick.set(ids.get(String(e.target._leaflet_id)), 1);
+		}
+		else
+		{
+			deleteTrajectory();
+			chooseNewPlane("stop");	
+			wasClick.set(ids.get(String(e.target._leaflet_id)), 0);
+		};
+	});
 	return marker;
 };
 
@@ -122,26 +136,32 @@ function updateInfoAboutPlanes(data)
 		deleteMarker(item[1]);
 	}
 	flights.clear();
-	var filter =$('#menu');
+  ids.clear();
+  var filter =$('#menu');
     filter = filter.serializeArray();
 	var count = 0;
 	if(filter[0].value != ""){
 		count = 1;
-	}
-	for(let i = 0; i < data.result.length; i++)
+  }
+  for(let i = 0; i < data.result.length; i++)
 	{
-		var color = "plane.png";
+    var color = "plane.png";
 		filter.forEach(function(item, j, filter){
 		if(item['name'] == 'Airlines[]' && item['value'] == data.result[i].airline){ 
 			var jcount = count +  j;
 			color = "plane" + jcount + ".png";
 		}
 	});
-		flights.set(data.result[i].flight, addMarker(flights[data.result[i].flight],
-												    [data.result[i].latitude, data.result[i].longitude],
-													 data.result[i].direction, color
-												   ));
-		// $('.flight_number').append('<option value="'+data.result[i].flight+'">'+data.result[i].flight+'</option>');
+marker = addMarker(flights[data.result[i].flight],
+			[data.result[i].latitude, data.result[i].longitude],
+			 data.result[i].direction, color
+		   );
+flights.set(data.result[i].flight, marker);
+		ids.set(String(marker._leaflet_id), data.result[i].id);
+		if(typeof wasClick.get(data.result[i].id) === "undefined")
+		{
+			wasClick.set(data.result[i].id, 0);	
+		};
 	};
 	var select = document.querySelector('.flight_number');
 	select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
@@ -181,8 +201,10 @@ function choosePlaneColorbyFilter (msg){ // msg - массив, созданны
 
 
 var flights = new Map();
+var ids = new Map();
+var wasClick = new Map();
+var	trajectory = L.polyline([[0,0]], {color: 'red'}).addTo(webmap);
 
-var	trajectory = L.polyline([[0,0]], {color: 'red'}).addTo(webmap)
 var tile_layer_93dd622128d8481fa64fdfdefbba6b3b = L.tileLayer(
 	"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	{"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}

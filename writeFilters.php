@@ -11,5 +11,9 @@ foreach ($_POST as $key=>$value){
 	}
 	$outputString .= "\n";
 };
-file_put_contents('choosenFlight.txt', $outputString);
+if($outputString[-1] == "\n")
+{
+	$outputString = substr($outputString, 0, -1);
+}
+file_put_contents('filters.txt', $outputString);
 ?>

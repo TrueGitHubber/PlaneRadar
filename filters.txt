@@ -1,4 +1,4 @@
-Airlines=Aeroflot&9 Air
-Departure=NRT
+Airlines=Aeroflot&Japan Airlines
+Departure=
 Arrival=
-Flight=
+Flight=JL1
