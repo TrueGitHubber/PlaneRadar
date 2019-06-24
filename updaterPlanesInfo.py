@@ -209,6 +209,9 @@ def getProPlanes():
     f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
     f.close()
+
+    time.sleep(3 - (time.time() - t1 - 0.0005))
+
 if __name__ == "__main__":
     CodeToNameAirline = readDict("converterCodeToNameAirline.txt")
     NameAirlineToCode = {v: k for k, v in CodeToNameAirline.items()}
