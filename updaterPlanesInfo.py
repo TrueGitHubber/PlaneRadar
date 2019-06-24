@@ -57,7 +57,11 @@ def writeDataPlanes(data):
 
             formatJson["result"][i]["id"] = key
             formatJson["result"][i]["flight"] = data[key][13]
-            formatJson["result"][i]["airline"] = data[key][18]
+            formatJson["result"][i]["airlineIATA"] = data[key][18]
+            try:
+                formatJson["result"][i]["airline"] = CodeToNameAirline[data[key][18]]
+            except:
+                formatJson["result"][i]["airline"] = None
             formatJson["result"][i]["latitude"] = data[key][1]
             formatJson["result"][i]["longitude"] = data[key][2]
             formatJson["result"][i]["direction"] = data[key][3]

@@ -1,4 +1,3 @@
-Airlines=Aeroflot&9 Air
-Departure=NRT
+Airlines=Aeroflot&UTair&UTair Cargo&UTair-Express
+Departure=
 Arrival=
-Flight=
