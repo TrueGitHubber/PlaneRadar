@@ -36,6 +36,7 @@ def writeDataPlanes(data):
         i+=1
     formatJson["result"]["airline"] = data["airline"]["name"]
     formatJson["result"]["aircraftModel"] = data["aircraft"]["model"]["text"]
+    formatJson["result"]["aircraftID"] = data["aircraft"]["hex"]
     formatJson["result"]["flightNumber"] = data["identification"]["number"]["default"]
     formatJson["result"]["scheduledDeparture"] = data["time"]["scheduled"]["departure"]
     formatJson["result"]["scheduledDeparture"] = getTime(formatJson["result"]["scheduledDeparture"])

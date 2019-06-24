@@ -1,5 +1,6 @@
 function deleteMarker(marker)
 {
+	console.log("del " + marker);
 	webmap.removeLayer(marker);
 };
 
@@ -84,6 +85,9 @@ function updateTrajectory(data)
 	var select = document.querySelector('#airline');
 	select.innerHTML = '<span value="">Авиакомпания : '+data['airline']+'</option>';
 	
+	var select = document.querySelector('#aircraftID');
+	select.innerHTML = '<span value="">Идентификатор судна : '+data['aircraftID']+'</option>';
+	
 	select = document.querySelector('#aircraftModel');
 	select.innerHTML = '<span value="">Модель судна : '+data['aircraftModel']+'</option>';
 	
@@ -100,10 +104,10 @@ function updateTrajectory(data)
 	select.innerHTML = '<span value="">Аэропорт отправления : '+data['airportDeparture']+'</option>';
 	
 	select = document.querySelector('#scheduledArrival');
-	select.innerHTML = '<span value="">Время вылета по расписанию : '+data['scheduledArrival']+'</option>';
+	select.innerHTML = '<span value="">Время прибытия по расписанию : '+data['scheduledArrival']+'</option>';
 	
 	select = document.querySelector('#estimatedArrival');
-	select.innerHTML = '<span value="">Время прилёта ожидаемое : '+data['estimatedArrival']+'</option>';
+	select.innerHTML = '<span value="">Время прибытия ожидаемое : '+data['estimatedArrival']+'</option>';
 	
 	select = document.querySelector('#airportArrival');
 	select.innerHTML = '<span value="">Аэропорт прибытия : '+data['airportArrival']+'</option>';
@@ -161,9 +165,9 @@ function updateInfoAboutPlanes(data)
 	for(item of flights)
 	{
 		deleteMarker(item[1]);
-	}
+	};
 	flights.clear();
-  ids.clear();
+	ids.clear();
   var filter =$('#menu');
     filter = filter.serializeArray();
 	var count = 0;
@@ -179,16 +183,25 @@ function updateInfoAboutPlanes(data)
 			color = "plane" + jcount + ".png";
 		}
 	});
-marker = addMarker(flights[data.result[i].flight],
+		marker = addMarker(flights[data.result[i].flight],
 			[data.result[i].latitude, data.result[i].longitude],
 			 data.result[i].direction, color
 		   );
-flights.set(data.result[i].flight, marker);
+		console.log(marker);
+		if(typeof flights.get(data.result[i].flight) === "undefined")
+		{
+			flights.set(data.result[i].flight, marker);
+		}
+		else
+		{
+			deleteMarker(marker);
+		};
 		ids.set(String(marker._leaflet_id), data.result[i].id);
 		if(typeof wasClick.get(data.result[i].id) === "undefined")
 		{
 			wasClick.set(data.result[i].id, 0);	
 		};
+		console.log(flights);
 	};
 	//var select = document.querySelector('.flight_number');
 	//select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
