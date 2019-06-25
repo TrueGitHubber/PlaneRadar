@@ -70,13 +70,3 @@ label {
     display: flex;
     flex-direction: column;
 }
-
-.title-second {
-    font-weight: bold !important;
-    font-size: 18px;
-}
-
-.dropdown-item {
-    width: 300px !important;
-    margin-left: 150px !important;
-}
