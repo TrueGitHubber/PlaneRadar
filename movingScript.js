@@ -81,37 +81,6 @@ function drawDashTrajectory (lat1, lng1, lat2, lng2){
 	dashTrajectory = L.polyline(latlngs, polylineOptions).addTo(webmap);
 };
 
-/*function drawDashTrajectoryBezier(lat1, lng1, lat2, lng2)
-{
-	trajectory = L.curve(  ['M',[lat1 ,lng1],
-						    'C',[lat2 ,lng2],
-							    [ ,],
-							    [ ,],
-							    [ ,],'Z'],
-						{color:'red', dashArray: '10, 10', dashOffset: '10', fill:true}).addTo(webmap)		
-};
-
-function drawDashTrajectoryBezier(lat1, lng1, lat2, lng2)
-{
-	trajectory = L.curve(  ['M',[lat1 ,lng1],
-						    'Q',[lat2 ,lng2],
-								[ ,],
-							    [ ,],
-							    [ ,],'Z'],
-						{color:'red', dashArray: '10, 10', dashOffset: '10', fill:true}).addTo(webmap)		
-};
-
-function drawDashTrajectoryBezier(lat1, lng1, lat2, lng2)
-{
-	trajectory = L.curve(  ['M',[lat1 ,lng1],
-						    'H',[lat1],
-							'V',[lng1],
-							'H',[lat2],
-							'V',[lng2],'Z'],
-						{color:'red', dashArray: '10, 10', dashOffset: '10', fill:true}).addTo(webmap)		
-};*/
-
-
 
 function delDashTrajectory (){
 	dashTrajectory.remove();
@@ -126,7 +95,6 @@ function updateTrajectory(data)
 	//drawTrajectory(data['trail']);
 	drawTrajectoryBezier(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
-	//drawDashTrajectoryBezier(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
 	var select = document.querySelector('#airline');
 	select.innerHTML = '<span value="">Авиакомпания : '+data['airline']+'</option>';
 	
@@ -196,23 +164,12 @@ function chooseNewPlane(id)
 
 function updateInfoAboutPlanes(data)
 {
-	// var event = JSON.parse(data.result, function(key, value) {
-	// 	if (key == 'fligt') return new Flight(value);
-	// 	return value;
-	// });
-
 	var newFlight = [];
 
 	for (var i = 0; i < data.result.length; i++) {
   		newFlight.push(data.result[i].flight);
 	}
-
-	// myJsonString = JSON.stringify(newFlight);
-
-	// console.log(event.flight.getFlight());
-	// console.log(myJsonString)
-
-	//alert("Success");
+	
 	for(item of flights)
 	{
 		deleteMarker(item[1]);
@@ -252,8 +209,6 @@ function updateInfoAboutPlanes(data)
 			wasClick.set(data.result[i].id, 0);	
 		};
 	};
-	//var select = document.querySelector('.flight_number');
-	//select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
 };
 
 function readFile(filename)
@@ -323,16 +278,7 @@ popup_5deecb525dae45f4933ad13864d615c4.setContent(html_76c86b9bcf4f4a2b883ca84ba
 flights["SU321"].bindPopup(popup_5deecb525dae45f4933ad13864d615c4)
 $(document).ready(function ()
 {
-	//var i = 0;
 	setInterval(readFile.bind(null, "nowPlanesInfo.json"), 3000);
-	/*$("#test").toggle( function()
-	{
-	//	flights.set("SU321", moveMarker(flights["SU321"], [54.890049, 20.59263+i]));
-		//flights.set("SU321", makeTextPopUpOnMarker(flights["SU321"], "Hrabrovo"));
-		readFile("nowPlanesInfo.json");
-		i=i+1;
-	});
-		*/
 });
 
 $('#btn-send').on('click', function() {
