@@ -108,10 +108,10 @@ function updateTrajectory(data)
 	select.innerHTML = '<span value="">Номер рейса : '+data['flightNumber']+'</option>';
 	
 	select = document.querySelector('#aircraftSpeed');
-	select.innerHTML = '<span value="">Скорость : '+data['speed']+' км/ч</option>';
+	select.innerHTML = '<span value="">Скорость : '+data['speed']+' миль/ч</option>';
 	
 	select = document.querySelector('#aircraftHeight');
-	select.innerHTML = '<span value="">Высота : '+data['height']+' м.</option>';
+	select.innerHTML = '<span value="">Высота : '+data['height']+' ф.</option>';
 	
 	select = document.querySelector('#scheduledDeparture');
 	select.innerHTML = '<span value="">Время вылета по расписанию : '+data['scheduledDeparture']+'</option>';
