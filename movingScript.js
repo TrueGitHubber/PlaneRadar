@@ -59,10 +59,11 @@ function drawTrajectoryBezier (latlngs) // latlngs - массив точек
 {
 		var points = new Array();
 		points.push('M', latlngs[0], 'Q');
-		for(let i = 1; i < latlngs.length; i+=2)
+		for(let i = 1; i < latlngs.length-1; i++)
 		{
 			points.push(latlngs[i]);
 		};
+		points.push(latlngs[latlngs.length - 1]);
 		trajectory = L.curve(points,{color:'red'}).addTo(webmap);
 };
 

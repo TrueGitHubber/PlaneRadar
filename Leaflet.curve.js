@@ -84,6 +84,10 @@ L.Curve = L.Path.extend({
 			}else if(lastCommand == 'Q'){
 				var controlPoint = new L.latLng(coord[0], coord[1]);
 				coord = this._coords[++i];
+				if(typeof this._coords[i] === "undefined")
+				{
+					continue;
+				}
 				var endPoint = new L.latLng(coord[0], coord[1]);
 
 				bound.extend(controlPoint);
