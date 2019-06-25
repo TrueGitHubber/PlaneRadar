@@ -2,6 +2,7 @@ import sys
 import json
 import time
 import sys
+import geocoder
 from requests import get
 
 def lastPoint():
@@ -19,6 +20,17 @@ def getTime(a):
     if (a == None):
         return a
     return time.ctime(int(a))
+
+
+def reverseGeocoder(point):
+    try:
+        g = geocoder.yandex(point, method='reverse')
+        if(g.state== None):
+            g = geocoder.google(point, method='reverse')
+        return g.state
+    except:
+        return None
+
 def writeDataPlanes(data):
     formatJson ={}
     formatJson["result"] = {}
@@ -58,7 +70,9 @@ def writeDataPlanes(data):
     formatJson["result"]["airportDeparture"] = data["airport"]["origin"]["name"]
     formatJson["result"]["airportArrival"] = data["airport"]["destination"]["name"]
     formatJson["result"]["coordsAirportArrival"] = [data["airport"]["destination"]["position"]["latitude"], data["airport"]["destination"]["position"]["longitude"]]
-    formatJson["result"]["trail"].append(lastPoint())
+    lastP = lastPoint()
+    formatJson["result"]["trail"].append(lastP)
+    formatJson["result"]["city"] = reverseGeocoder(lastP)
     formatJson = json.dumps(formatJson)
     f = open("trajectoryInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
@@ -93,6 +107,8 @@ def getQuery():
     lastQuery = f.read()
     f.close()
     return lastQuery
+
+
 if __name__ == "__main__":
     while(1):
         newQuery = getQuery()

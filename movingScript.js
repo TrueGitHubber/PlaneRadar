@@ -107,6 +107,9 @@ function updateTrajectory(data)
 	select = document.querySelector('#numberFlight');
 	select.innerHTML = '<span value="">Номер рейса : '+data['flightNumber']+'</option>';
 	
+	select = document.querySelector('#city');
+	select.innerHTML = '<span value="">Пролетает над : '+data['city']+'</option>';
+	
 	select = document.querySelector('#aircraftSpeed');
 	select.innerHTML = '<span value="">Скорость : '+data['speed']+' миль/ч</option>';
 	

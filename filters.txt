@@ -1,3 +1,2 @@
-Airlines=
-Departure=KGD
+Airlines=Aeroflot&UTair
 Arrival=
