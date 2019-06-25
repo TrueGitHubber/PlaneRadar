@@ -1,6 +1,5 @@
 function deleteMarker(marker)
 {
-	console.log("del " + marker);
 	webmap.removeLayer(marker);
 };
 
@@ -56,6 +55,17 @@ function drawTrajectory (latlngs) // latlngs - массив точек
 	trajectory = L.polyline(latlngs, {color: 'red'}).addTo(webmap)
 };
 
+function drawTrajectoryBezier (latlngs) // latlngs - массив точек
+{
+		var points = new Array();
+		points.push('M', latlngs[0], 'Q');
+		for(let i = 1; i < latlngs.length; i+=2)
+		{
+			points.push(latlngs[i]);
+		};
+		trajectory = L.curve(points,{color:'red'}).addTo(webmap);
+};
+
 function deleteTrajectory ()
 {
 	trajectory.remove();
@@ -70,6 +80,38 @@ function drawDashTrajectory (lat1, lng1, lat2, lng2){
 	dashTrajectory = L.polyline(latlngs, polylineOptions).addTo(webmap);
 };
 
+/*function drawDashTrajectoryBezier(lat1, lng1, lat2, lng2)
+{
+	trajectory = L.curve(  ['M',[lat1 ,lng1],
+						    'C',[lat2 ,lng2],
+							    [ ,],
+							    [ ,],
+							    [ ,],'Z'],
+						{color:'red', dashArray: '10, 10', dashOffset: '10', fill:true}).addTo(webmap)		
+};
+
+function drawDashTrajectoryBezier(lat1, lng1, lat2, lng2)
+{
+	trajectory = L.curve(  ['M',[lat1 ,lng1],
+						    'Q',[lat2 ,lng2],
+								[ ,],
+							    [ ,],
+							    [ ,],'Z'],
+						{color:'red', dashArray: '10, 10', dashOffset: '10', fill:true}).addTo(webmap)		
+};
+
+function drawDashTrajectoryBezier(lat1, lng1, lat2, lng2)
+{
+	trajectory = L.curve(  ['M',[lat1 ,lng1],
+						    'H',[lat1],
+							'V',[lng1],
+							'H',[lat2],
+							'V',[lng2],'Z'],
+						{color:'red', dashArray: '10, 10', dashOffset: '10', fill:true}).addTo(webmap)		
+};*/
+
+
+
 function delDashTrajectory (){
 	dashTrajectory.remove();
 };
@@ -80,8 +122,10 @@ function updateTrajectory(data)
 	delDashTrajectory();
 	deleteTrajectory();
 	data = data['result'];
-	drawTrajectory(data['trail']);
+	//drawTrajectory(data['trail']);
+	drawTrajectoryBezier(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
+	//drawDashTrajectoryBezier(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
 	var select = document.querySelector('#airline');
 	select.innerHTML = '<span value="">Авиакомпания : '+data['airline']+'</option>';
 	
@@ -193,7 +237,6 @@ function updateInfoAboutPlanes(data)
 			[data.result[i].latitude, data.result[i].longitude],
 			 data.result[i].direction, color
 		   );
-		console.log(marker);
 		if(typeof flights.get(data.result[i].flight) === "undefined")
 		{
 			flights.set(data.result[i].flight, marker);
@@ -207,7 +250,6 @@ function updateInfoAboutPlanes(data)
 		{
 			wasClick.set(data.result[i].id, 0);	
 		};
-		console.log(flights);
 	};
 	//var select = document.querySelector('.flight_number');
 	//select.innerHTML = newFlight.map(n => `<option value=${n}>${n}</option>`).join('');
@@ -295,7 +337,6 @@ $(document).ready(function ()
 $('#btn-send').on('click', function() {
     var msg =$('#menu');
     msg = msg.serializeArray();
-    console.log(msg);
     $.ajax({
         type: 'POST',
         url: 'writeFilters.php',
