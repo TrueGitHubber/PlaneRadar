@@ -82,12 +82,16 @@ L.Curve = L.Path.extend({
 				endPoint.controlPoint2 = controlPoint2;
 				lastPoint = endPoint;
 			}else if(lastCommand == 'Q'){
+				if(i+1 >= this._coords.length)
+				{
+					break;
+				}
 				var controlPoint = new L.latLng(coord[0], coord[1]);
 				coord = this._coords[++i];
-				if(typeof this._coords[i] === "undefined")
-				{
-					continue;
-				}
+				//if(typeof this._coords[i] === "undefined")
+			//	{
+					//continue;
+				//}
 				var endPoint = new L.latLng(coord[0], coord[1]);
 
 				bound.extend(controlPoint);
@@ -183,10 +187,14 @@ L.Curve = L.Path.extend({
 						str += point.y + ' ';
 						break;
 					default:
-						str += point.x + ',' + point.y + ' ';
+						str += point.x + ' '+point.y + ',';
 						break;
 				}
 			}
+		}
+		if(str.endsWith(','))
+		{
+			str = str.substr(0,str.length-1);
 		}
 		return str || 'M0 0';
 	},

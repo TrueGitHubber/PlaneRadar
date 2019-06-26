@@ -64,6 +64,11 @@ function drawTrajectoryBezier (latlngs) // latlngs - массив точек
 			points.push(latlngs[i]);
 		};
 		points.push(latlngs[latlngs.length - 1]);
+		if(points.length % 2 === 0)
+		{
+			points.push(latlngs[latlngs.length - 1]);
+
+		}		
 		trajectory = L.curve(points,{color:'red'}).addTo(webmap);
 };
 
@@ -92,8 +97,8 @@ function updateTrajectory(data)
 	delDashTrajectory();
 	deleteTrajectory();
 	data = data['result'];
-	drawTrajectory(data['trail']);
-	//drawTrajectoryBezier(data['trail']);
+	//drawTrajectory(data['trail']);
+	drawTrajectoryBezier(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
 	decodeIndexAvito = ['#first', '#second', '#third', '#fourth', '#fifth', '#sixth', '#seventh', '#eighth', '#ninth','#tenth'];
 	if(data['avito'] !== null && data['avito'].length > 0)
@@ -224,6 +229,8 @@ function updateInfoAboutPlanes(data)
 	if(filter[0].value != ""){
 		count = 1;
   }
+  	readTrajectory();
+
   for(let i = 0; i < data.result.length; i++)
 	{
     var color = "plane.png";
@@ -266,7 +273,6 @@ function readFile(filename)
 			//alert("Fail");
 		}
 	});
-	readTrajectory()
 };
 
 function choosePlaneColorbyFilter (msg){ // msg - массив, созданный фильтром
