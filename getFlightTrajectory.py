@@ -88,7 +88,6 @@ def writeDataPlanes(data):
     f = open("trajectoryInfo.json", "w", encoding = "utf-8")
     f.write(formatJson)
     f.close()
-    writeDataCars(getCars(lastP))
 
 def getTrajectory(flightID):
     t1 = time.time()
@@ -98,10 +97,6 @@ def getTrajectory(flightID):
         headers["user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
         req = get(url, headers = headers, timeout = 10)
         data = req.json() 
-        
-        lastP = lastPoint()
-        url = "http://84.201.139.189:8080/devapi-2/popular/models?city="+regioncenter[reverseGeocoder(lastP)]
-        
         #В статусе лежит инофрмация с аэропорта(задержан ли рейс и т.д.) в aircraft лежит информация о том, что за самолёт, стране где он зарегистрирован
         #и его изображения. В airport подробная информация об аэропортах вылета и прибытия во flightHistory лежит история полётов
         #в тайм лежит время отправления и прибытия по расписанию, реальное и ожидаемое
