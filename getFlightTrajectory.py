@@ -32,12 +32,25 @@ def reverseGeocoder(point):
         return None
 
 def getCars(lastP):
-    url = "http://84.201.139.189:8080/devapi-2/popular/models?city=" + regioncenter[reverseGeocoder(lastP)]
-    headers = {}
-    headers["user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
-    req = get(url, headers=headers, timeout=10)
-    data = req.json()
-    return data["data"]
+    try:
+        url = "http://84.201.139.189:8080/devapi-2/popular/models?city=" + regioncenter[reverseGeocoder(lastP)]
+        headers = {}
+        headers["user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
+        req = get(url, headers=headers, timeout=5)
+        data = req.json()
+        return data["data"]
+    except:
+        if "ReadTimeout" in str(sys.exc_info()):
+            print("ReadTimeout avito")
+            getCars(lastP)
+        elif "KeyError" in str(sys.exc_info()):
+            print(reverseGeocoder(lastP)+" not in regions list")
+            return None
+        else:
+            print(sys.exc_info())
+            print(req.status_code)
+            return None
+
 
 def writeDataPlanes(data):
     formatJson ={}
