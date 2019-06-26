@@ -92,34 +92,26 @@ function updateTrajectory(data)
 	delDashTrajectory();
 	deleteTrajectory();
 	data = data['result'];
-	//drawTrajectory(data['trail']);
-	drawTrajectoryBezier(data['trail']);
+	drawTrajectory(data['trail']);
+	//drawTrajectoryBezier(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
-	if(data['avito'] !== null)
+	decodeIndexAvito = ['#first', '#second', '#third', '#fourth', '#fifth', '#sixth', '#seventh', '#eighth', '#ninth','#tenth'];
+	if(data['avito'] !== null && data['avito'].length > 0)
 	{
-		var select = document.querySelector('#first');
-		select.innerHTML = '<span value="">1. '+data['avito'][0]['mark']+' '+data['avito'][0]['model']+'(В продаже: '+data['avito'][0]['number']+')</option>';
-		var select = document.querySelector('#second');
-		select.innerHTML = '<span value="">2. '+data['avito'][1]['mark']+' '+data['avito'][1]['model']+'(В продаже: '+data['avito'][1]['number']+')</option>';
-		var select = document.querySelector('#third');
-		select.innerHTML = '<span value="">3. '+data['avito'][2]['mark']+' '+data['avito'][2]['model']+'(В продаже: '+data['avito'][2]['number']+')</option>';
-		var select = document.querySelector('#fourth');
-		select.innerHTML = '<span value="">4. '+data['avito'][3]['mark']+' '+data['avito'][3]['model']+'(В продаже: '+data['avito'][3]['number']+')</option>';
-		var select = document.querySelector('#fifth');
-		select.innerHTML = '<span value="">5. '+data['avito'][4]['mark']+' '+data['avito'][4]['model']+'(В продаже: '+data['avito'][4]['number']+')</option>';
-		var select = document.querySelector('#sixth');
-		select.innerHTML = '<span value="">6. '+data['avito'][5]['mark']+' '+data['avito'][5]['model']+'(В продаже: '+data['avito'][5]['number']+')</option>';
-		var select = document.querySelector('#seventh');
-		select.innerHTML = '<span value="">7. '+data['avito'][6]['mark']+' '+data['avito'][6]['model']+'(В продаже: '+data['avito'][6]['number']+')</option>';
-		var select = document.querySelector('#eighth');
-		select.innerHTML = '<span value="">8. '+data['avito'][7]['mark']+' '+data['avito'][7]['model']+'(В продаже: '+data['avito'][7]['number']+')</option>';
-		var select = document.querySelector('#ninth');
-		select.innerHTML = '<span value="">9. '+data['avito'][8]['mark']+' '+data['avito'][8]['model']+'(В продаже: '+data['avito'][8]['number']+')</option>';
-		var select = document.querySelector('#tenth');
-		select.innerHTML = '<span value="">10. '+data['avito'][9]['mark']+' '+data['avito'][9]['model']+'(В продаже: '+data['avito'][9]['number']+')</option>';
+		var select = document.querySelector('#topName');
+		select.innerHTML = '<span value="">Топ-'+String(data['avito'].length)+' авто в городе:</option>';
+		
+		for(let i = 0; i < data['avito'].length; i++)
+		{
+			var select = document.querySelector(decodeIndexAvito[i]);
+			select.innerHTML = '<span value="">'+String(i+1)+'. '+data['avito'][i]['mark']+' '+data['avito'][i]['model']+'(В продаже: '+data['avito'][i]['number']+')</option>';
+		}
 	}
 	else
 	{
+		var select = document.querySelector('#topName');
+		select.innerHTML = '<span value"">Топ-10 авто в городе:</option>';
+		
 		var select = document.querySelector('#first');
 		select.innerHTML = '<span value="">            Нет информации в этом регионе</option>';
 		var select = document.querySelector('#second');
