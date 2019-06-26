@@ -27,7 +27,13 @@ function addMarker(marker, coords, angle, iconName)
 	//marker = makeTextPopUpOnMarker(marker, "Info about plane");
 	
 	marker.on('click', function(e){
-
+		if(lastClick !== ids.get(String(e.target._leaflet_id)))
+		{
+			console.log("set 0");
+			wasClick.set(lastClick, 0);
+			lastClick = ids.get(String(e.target._leaflet_id));
+		}
+			
 		if(wasClick.get(ids.get(String(e.target._leaflet_id))) == 0){
 			chooseNewPlane(ids.get(String(e.target._leaflet_id)));
 			wasClick.set(ids.get(String(e.target._leaflet_id)), 1);
@@ -98,9 +104,12 @@ function updateTrajectory(data)
 	deleteTrajectory();
 	data = data['result'];
 //	drawTrajectory(data['trail']);
+	if(typeof data['trail'] === "undefined")
+	{
+		return;
+	}
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
 	drawTrajectoryBezier(data['trail']);
-
 	decodeIndexAvito = ['#first', '#second', '#third', '#fourth', '#fifth', '#sixth', '#seventh', '#eighth', '#ninth','#tenth'];
 	if(data['avito'] !== null && data['avito'].length > 0)
 	{
@@ -300,7 +309,7 @@ var wasClick = new Map();
 var	trajectory = L.polyline([[0,0]], {color: 'red'}).addTo(webmap);
 var polylineOptions = {color: 'red', dashArray: '10, 10', dashOffset: '10'};
 var dashTrajectory = L.polyline([[0,0]], polylineOptions).addTo(webmap);
-
+var lastClick;
 var tile_layer_93dd622128d8481fa64fdfdefbba6b3b = L.tileLayer(
 	"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	{"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
