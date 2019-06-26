@@ -110,6 +110,21 @@ def getQuery():
 
 
 if __name__ == "__main__":
+    regioncenter = {'Rostov Region': 'rostov-na-donu',
+                    'Moscow': 'moskva',
+                    'Krasnoyarsk Territory': 'krasnoyarsk',
+                    'Volgograd Region': 'volgograd',
+                    'Chelyabinsk Region': 'chelyabinsk',
+                    'St. Petersburg': 'sankt-peterburg',
+                    'Republic of Tatarstan': 'kazan',
+                    'Samara Region': 'samara',
+                    'Novosibirsk Region': 'novosibirsk',
+                    'Sverdlovsk Region': 'ekaterinburg',
+                    'Nizhniy Novgorod Region': 'nizhniy_novgorod',
+                    'Omsk Region': 'omsk',
+                    'Perm Territory': 'perm',
+                    'Voronezh Region': 'voronezh',
+                    'Republic of Bashkortostan': 'ufa'}
     while(1):
         newQuery = getQuery()
         try:
