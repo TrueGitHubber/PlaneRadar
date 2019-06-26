@@ -97,9 +97,10 @@ function updateTrajectory(data)
 	delDashTrajectory();
 	deleteTrajectory();
 	data = data['result'];
-	//drawTrajectory(data['trail']);
-	drawTrajectoryBezier(data['trail']);
+//	drawTrajectory(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
+	drawTrajectoryBezier(data['trail']);
+
 	decodeIndexAvito = ['#first', '#second', '#third', '#fourth', '#fifth', '#sixth', '#seventh', '#eighth', '#ninth','#tenth'];
 	if(data['avito'] !== null && data['avito'].length > 0)
 	{
@@ -229,7 +230,6 @@ function updateInfoAboutPlanes(data)
 	if(filter[0].value != ""){
 		count = 1;
   }
-  	readTrajectory();
 
   for(let i = 0; i < data.result.length; i++)
 	{
@@ -250,7 +250,8 @@ function updateInfoAboutPlanes(data)
 		}
 		else
 		{
-			deleteMarker(marker);
+			deleteMarker(flights.get(data.result[i].flight));
+			flights.set(data.result[i].flight, marker);
 		};
 		ids.set(String(marker._leaflet_id), data.result[i].id);
 		if(typeof wasClick.get(data.result[i].id) === "undefined")
@@ -273,6 +274,7 @@ function readFile(filename)
 			//alert("Fail");
 		}
 	});
+  	readTrajectory();
 };
 
 function choosePlaneColorbyFilter (msg){ // msg - массив, созданный фильтром

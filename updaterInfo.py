@@ -75,9 +75,7 @@ def proFilters(data,formatJson, i, n):
 def writeDataPlanes(data):
     formatJson = simpeFilters(data)
 
-    f = open("nowPlanesInfo.json", "w", encoding="utf-8")
-    f.write(formatJson)
-    f.close()
+    return formatJson
 def simpeFilters(data):
     formatJson = {}
 
@@ -136,9 +134,7 @@ def simpeFilters(data):
 def writeDataPlanes(data):
     formatJson = simpeFilters(data)
 
-    f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
-    f.write(formatJson)
-    f.close()
+    return formatJson
 def getPlanes():
     t1 = time.time()
     try:
@@ -147,8 +143,7 @@ def getPlanes():
         headers["user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
         req = get(url, headers = headers, timeout = 10)
         data = req.json()
-        writeDataPlanes(data)
-        time.sleep(3-(time.time()-t1-0.0005))
+        return writeDataPlanes(data)
     except:
         if "ReadTimeout" in str(sys.exc_info()):
             print("ReadTimeout")
@@ -193,7 +188,6 @@ def getProPlanes():
                 req = get(url, headers = headers, timeout = 10)
                 data = req.json()
                 formatJson, i, n = proFilters(data,formatJson,i,n)
-                #time.sleep(3-(time.time()-t1-0.0005))
             except:
                 if "ReadTimeout" in str(sys.exc_info()):
                     print("ReadTimeout")
@@ -207,11 +201,9 @@ def getProPlanes():
    # formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
     formatJson = json.dumps(formatJson)
 
-    f = open("nowPlanesInfo.json", "w", encoding = "utf-8")
-    f.write(formatJson)
-    f.close()
-
     print(time.time() - t1)
+
+    return formatJson
 
 
 def lastPoint():
@@ -223,6 +215,7 @@ def lastPoint():
     for flight in allFlights:
         if (flight['id'] == newQuery):
             return [flight["latitude"], flight["longitude"]]
+    print("I don`t know this flight ID")
     exit(2)
 
 
@@ -242,9 +235,8 @@ def reverseGeocoder(point):
         return None
 
 
-def getCars(lastP):
+def getCars(state):
     try:
-        state = reverseGeocoder(lastP)
         if (state == None):
             print("I don`t know where is plane")
             return None
@@ -259,9 +251,9 @@ def getCars(lastP):
     except:
         if "ReadTimeout" in str(sys.exc_info()):
             print("ReadTimeout avito")
-            getCars(lastP)
+            getCars(state)
         elif "KeyError" in str(sys.exc_info()):
-            print(reverseGeocoder(lastP) + " not in regions list")
+            print(state + " not in regions list")
             return None
         else:
             print(sys.exc_info())
@@ -269,7 +261,7 @@ def getCars(lastP):
             return None
 
 
-def writeDataPlanes(data):
+def writeDataTrajectory(data,f1):
     formatJson = {}
     formatJson["result"] = {}
     formatJson["result"]["trail"] = []
@@ -309,19 +301,22 @@ def writeDataPlanes(data):
     formatJson["result"]["airportArrival"] = data["airport"]["destination"]["name"]
     formatJson["result"]["coordsAirportArrival"] = [data["airport"]["destination"]["position"]["latitude"],
                                                     data["airport"]["destination"]["position"]["longitude"]]
+
+    writeJson("nowPlanesInfo.json", f1)
+
     lastP = lastPoint()
     formatJson["result"]["trail"].append(lastP)
-    formatJson["result"]["city"] = reverseGeocoder(lastP)
+    state = reverseGeocoder(lastP)
+    formatJson["result"]["city"] = state
 
-    formatJson["result"]["avito"] = getCars(lastP)
+    formatJson["result"]["avito"] = getCars(state)
 
     formatJson = json.dumps(formatJson)
-    f = open("trajectoryInfo.json", "w", encoding="utf-8")
-    f.write(formatJson)
-    f.close()
+
+    return formatJson
 
 
-def getTrajectory(flightID):
+def getTrajectory(flightID, f1):
     t1 = time.time()
     try:
         url = "https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=" + flightID
@@ -334,7 +329,7 @@ def getTrajectory(flightID):
         # и его изображения. В airport подробная информация об аэропортах вылета и прибытия во flightHistory лежит история полётов
         # в тайм лежит время отправления и прибытия по расписанию, реальное и ожидаемое
         # в trail хранится траектория
-        writeDataPlanes(data)
+        return writeDataTrajectory(data, f1)
     except:
         if "ReadTimeout" in str(sys.exc_info()):
             print("ReadTimeout")
@@ -347,6 +342,10 @@ def getTrajectory(flightID):
             exit(1)
     print("Information received in: " + str(time.time() - t1) + " seconds")
 
+def writeJson(filename, formatJson):
+    f = open(filename, "w", encoding="utf-8")
+    f.write(formatJson)
+    f.close()
 
 def getQuery():
     f = open("choosenFlight.txt", "r", encoding="utf-8")
@@ -354,12 +353,14 @@ def getQuery():
     f.close()
     return lastQuery
 if __name__ == "__main__":
-    regioncenter = {'Rostov Region': 'rostov-na-donu',
-                    'Moscow Region': 'moskva',
+    regioncenter = {'Archangel Region': 'arhangelsk',
+                    'Rostov Region': 'rostov-na-donu',
+                    'Moscow': 'moskva',
                     'Krasnoyarsk Territory': 'krasnoyarsk',
                     'Volgograd Region': 'volgograd',
                     'Chelyabinsk Region': 'chelyabinsk',
                     'St. Petersburg': 'sankt-peterburg',
+                    'Leningrad Region':'sankt-peterburg',
                     'Republic of Tatarstan': 'kazan',
                     'Samara Region': 'samara',
                     'Novosibirsk Region': 'novosibirsk',
@@ -368,31 +369,96 @@ if __name__ == "__main__":
                     'Omsk Region': 'omsk',
                     'Perm Territory': 'perm',
                     'Voronezh Region': 'voronezh',
-                    'Republic of Bashkortostan': 'ufa'}
+                    'Republic of Bashkortostan': 'ufa',
+                    'Primorye Territory': 'vladivostok',
+                    'Republic of Mari El': 'yoshkar-ola',
+                    'Kamchatka Territory': 'petropavlovsk-kamchatskiy',
+                    'Republic of Buryatia': 'ulan-ude',
+                    'Bryansk Region': 'bryansk',
+                    'Ulyanovsk Region': 'ulyanovsk',
+                    'Ryazan Region': 'ryazan',
+                    'Tyumen Region': 'hanty-mansiysk',
+                    'Belgorod Region': 'belgorod',
+                    'Republic of Khakassia': 'abakan',
+                    'Khabarovsk Territory': 'habarovsk',
+                    'Kaluga Region': 'kaluga',
+                    'Krasnodar Territory': 'krasnodar',
+                    'Republic of Daghestan': 'mahachkala',
+                    'Smolensk Region': 'smolensk',
+                    'Republic of Karelia': 'petrozavodsk',
+                    'Penza Region': 'penza',
+                    'Novgorod Region': 'velikiy_novgorod',
+                    'Republic of Adygea': 'maykop',
+                    'Kurgan Region': 'kurgan',
+                    'Ivanovo Region': 'ivanovo',
+                    'Kirov Region': 'kirovskaya_oblast_kirov',
+                    'Trans-Baikal Territory': 'chita',
+                    'Orenburg Region': 'orenburg',
+                    'Irkutsk Region': 'irkutsk',
+                    'Sevastopol': 'sevastopol',
+                    'Altai Territory': 'barnaul',
+                    'Udmurtian Republic': 'izhevsk',
+                    'Kursk Region': 'kursk',
+                    'Vladimir Region': 'vladimir',
+                    'Republic of Sakha (Yakutia)': 'saha_yakutiya',
+                    'Republic of Mordovia': 'saransk',
+                    'Tomsk Region': 'tomsk',
+                    'Vologda Region': 'vologda',
+                    'Tambov Region': 'tambov',
+                    'Kaliningrad Region': 'kaliningrad',
+                    'Tver Region': 'tver',
+                    'Komi Republic': 'salehard',
+                    'Tyumen Region': 'syktyvkar',
+                    'Republic of Severnaya Ossetia-Alania': 'vladikavkaz',
+                    'Pskov Region': 'pskov',
+                    'Republic of Altai': 'gorno-altaysk',
+                    'Chechen Republic': 'groznyy',
+                    'Chuvash Republic': 'cheboksary',
+                    'Yaroslavl Region': 'yaroslavl',
+                    'Tula Region': 'tula',
+                    'Kemerovo Region': 'kemerovo',
+                    'Republic of Kalmykia': 'elista',
+                    'Saratov Region': 'saratov',
+                    'Astrakhan Region': 'astrahan',
+                    'Republic of Ingushetia': 'magas',
+                    'Perm Territory': 'perm',
+                    'Oryol Region': 'orel',
+                    'Murmansk Region': 'murmansk',
+                    'Kostroma Region': 'kostroma',
+                    'Stavropol Territory': 'stavropol',
+                    'Republic of Crimea': 'simferopol',
+                    'Lipetsk Region': 'lipetsk',
+                    'Karachayevo-Circassian Republic': 'cherkessk',
+                    'Kabardino-Balkarian Republic': 'nalchik'}
     CodeToNameAirline = readDict("converterCodeToNameAirline.txt")
     NameAirlineToCode = {v: k for k, v in CodeToNameAirline.items()}
     while(1):
+        allTime = time.time()
         filters = getFilters()
         newQuery = getQuery()
         try:
             if(len(filters["Airlines"])>0 or len(filters["Arrival"])>0 or len(filters["Departure"])>0):
-                getProPlanes()
+                f1 = getProPlanes()
                 print("Getting info about flight with id:" + newQuery)
                 if newQuery == "stop":
                     f = open("trajectoryInfo.json", "w", encoding="utf-8")
                     f.write('{"result": [[0,0]]}')
                     f.close()
+                    writeJson("nowPlanesInfo.json", f1)
                     continue
-                getTrajectory(newQuery)
+                f2 = getTrajectory(newQuery, f1)
             else:
-                getPlanes()
+                f1 = getPlanes()
                 print("Getting info about flight with id:" + newQuery)
                 if newQuery == "stop":
                     f = open("trajectoryInfo.json", "w", encoding="utf-8")
                     f.write('{"result": [[0,0]]}')
                     f.close()
+                    writeJson("nowPlanesInfo.json", f1)
                     continue
-                getTrajectory(newQuery)
+                f2 = getTrajectory(newQuery, f1)
+            writeJson("trajectoryInfo.json", f2)
+            time.sleep(3-(time.time()-allTime))
         except:
             print(sys.exc_info())
             continue
