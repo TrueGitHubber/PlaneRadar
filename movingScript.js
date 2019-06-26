@@ -95,6 +95,27 @@ function updateTrajectory(data)
 	//drawTrajectory(data['trail']);
 	drawTrajectoryBezier(data['trail']);
 	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
+	var select = document.querySelector('#first');
+	select.innerHTML = '<span value="">1 : '+data['avito'][0]['mark']+data['avito'][0]['model']+'</option>';
+	var select = document.querySelector('#second');
+	select.innerHTML = '<span value="">2 : '+data['avito'][1]['mark']+data['avito'][1]['model']+'</option>';
+	var select = document.querySelector('#third');
+	select.innerHTML = '<span value="">3 : '+data['avito'][2]['mark']+data['avito'][2]['model']+'</option>';
+	var select = document.querySelector('#fourth');
+	select.innerHTML = '<span value="">4 : '+data['avito'][3]['mark']+data['avito'][3]['model']+'</option>';
+	var select = document.querySelector('#fifth');
+	select.innerHTML = '<span value="">5 : '+data['avito'][4]['mark']+data['avito'][4]['model']+'</option>';
+	var select = document.querySelector('#sixth');
+	select.innerHTML = '<span value="">6 : '+data['avito'][5]['mark']+data['avito'][5]['model']+'</option>';
+	var select = document.querySelector('#seventh');
+	select.innerHTML = '<span value="">7 : '+data['avito'][6]['mark']+data['avito'][6]['model']+'</option>';
+	var select = document.querySelector('#eighth');
+	select.innerHTML = '<span value="">8 : '+data['avito'][7]['mark']+data['avito'][7]['model']+'</option>';
+	var select = document.querySelector('#ninth');
+	select.innerHTML = '<span value="">9 : '+data['avito'][8]['mark']+data['avito'][8]['model']+'</option>';
+	var select = document.querySelector('#tenth');
+	select.innerHTML = '<span value="">10 : '+data['avito'][9]['mark']+data['avito'][9]['model']+'</option>';
+	
 	var select = document.querySelector('#airline');
 	select.innerHTML = '<span value="">Авиакомпания : '+data['airline']+'</option>';
 	
