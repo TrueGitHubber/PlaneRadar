@@ -226,10 +226,12 @@ def getTime(a):
 
 
 def reverseGeocoder(point):
+   # point = [61.668832,50.836461]
     try:
         g = geocoder.yandex(point, method='reverse')
         if (g.state == None):
             g = geocoder.google(point, method='reverse')
+        print(g.state)
         return g.state
     except:
         return None
@@ -246,7 +248,6 @@ def getCars(state):
             "user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
         req = get(url, headers=headers, timeout=5)
         data = req.json()
-        print(data)
         return data["data"]
     except:
         if "ReadTimeout" in str(sys.exc_info()):
@@ -355,11 +356,10 @@ def getQuery():
 if __name__ == "__main__":
     regioncenter = {'Archangel Region': 'arhangelsk',
                     'Rostov Region': 'rostov-na-donu',
-                    'Moscow': 'moskva',
+                    'Moscow Region': 'moskva',
                     'Krasnoyarsk Territory': 'krasnoyarsk',
                     'Volgograd Region': 'volgograd',
                     'Chelyabinsk Region': 'chelyabinsk',
-                    'St. Petersburg': 'sankt-peterburg',
                     'Leningrad Region':'sankt-peterburg',
                     'Republic of Tatarstan': 'kazan',
                     'Samara Region': 'samara',
@@ -377,7 +377,8 @@ if __name__ == "__main__":
                     'Bryansk Region': 'bryansk',
                     'Ulyanovsk Region': 'ulyanovsk',
                     'Ryazan Region': 'ryazan',
-                    'Tyumen Region': 'hanty-mansiysk',
+                    'Tyumen Region2': 'hanty-mansiysk',
+                    'Tyumen Region3': 'naryan-mar',
                     'Belgorod Region': 'belgorod',
                     'Republic of Khakassia': 'abakan',
                     'Khabarovsk Territory': 'habarovsk',
@@ -395,20 +396,19 @@ if __name__ == "__main__":
                     'Trans-Baikal Territory': 'chita',
                     'Orenburg Region': 'orenburg',
                     'Irkutsk Region': 'irkutsk',
-                    'Sevastopol': 'sevastopol',
                     'Altai Territory': 'barnaul',
                     'Udmurtian Republic': 'izhevsk',
                     'Kursk Region': 'kursk',
                     'Vladimir Region': 'vladimir',
-                    'Republic of Sakha (Yakutia)': 'saha_yakutiya',
+                    'Republic of Sakha (Yakutia)': 'yakutsk',
                     'Republic of Mordovia': 'saransk',
                     'Tomsk Region': 'tomsk',
                     'Vologda Region': 'vologda',
                     'Tambov Region': 'tambov',
                     'Kaliningrad Region': 'kaliningrad',
                     'Tver Region': 'tver',
-                    'Komi Republic': 'salehard',
-                    'Tyumen Region': 'syktyvkar',
+                    'Tyumen Region4': 'salehard',
+                    'Komi Republic': 'syktyvkar',
                     'Republic of Severnaya Ossetia-Alania': 'vladikavkaz',
                     'Pskov Region': 'pskov',
                     'Republic of Altai': 'gorno-altaysk',
@@ -421,7 +421,6 @@ if __name__ == "__main__":
                     'Saratov Region': 'saratov',
                     'Astrakhan Region': 'astrahan',
                     'Republic of Ingushetia': 'magas',
-                    'Perm Territory': 'perm',
                     'Oryol Region': 'orel',
                     'Murmansk Region': 'murmansk',
                     'Kostroma Region': 'kostroma',
@@ -429,7 +428,14 @@ if __name__ == "__main__":
                     'Republic of Crimea': 'simferopol',
                     'Lipetsk Region': 'lipetsk',
                     'Karachayevo-Circassian Republic': 'cherkessk',
-                    'Kabardino-Balkarian Republic': 'nalchik'}
+                    'Kabardino-Balkarian Republic': 'nalchik',
+                    'Republic of Tyva':'kyzyl',
+                    'Amurskaya oblast': 'amurskaya_oblast_blagoveschensk',
+                    'Jewish Autonomous Region' : 'birobidzhan',
+                    'Chukotka Autonomous Area': 'anadyr',
+                    'Sakhalin Region': 'yuzhno-sahalinsk',
+                    'Magadan Region':'magadan',
+                    'Tyumen Region' : 'tyumen'}
     CodeToNameAirline = readDict("converterCodeToNameAirline.txt")
     NameAirlineToCode = {v: k for k, v in CodeToNameAirline.items()}
     while(1):
