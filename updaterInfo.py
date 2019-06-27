@@ -197,7 +197,7 @@ def getProPlanes():
                 else:
                     print(sys.exc_info())
                     print(req.status_code)
-                    exit(1)
+                    exit(2)
    # formatJson["result"] = sorted(formatJson["result"], key=lambda el: el["flight"])
     formatJson = json.dumps(formatJson)
 
@@ -216,7 +216,7 @@ def lastPoint():
         if (flight['id'] == newQuery):
             return [flight["latitude"], flight["longitude"]]
     print("I don`t know this flight ID")
-    exit(2)
+    exit(3)
 
 
 def getTime(a):
@@ -268,6 +268,7 @@ def writeDataTrajectory(data,f1):
     formatJson["result"]["trail"] = []
     i = 0
     n = 1
+
     for el in reversed(data["trail"]):
         formatJson["result"]["trail"].append([el["lat"], el["lng"]])
 
@@ -298,10 +299,12 @@ def writeDataTrajectory(data,f1):
 
     formatJson["result"]["estimatedArrival"] = data["time"]["estimated"]["arrival"]
     formatJson["result"]["estimatedArrival"] = getTime(formatJson["result"]["estimatedArrival"])
-    formatJson["result"]["airportDeparture"] = data["airport"]["origin"]["name"]
-    formatJson["result"]["airportArrival"] = data["airport"]["destination"]["name"]
+
+    formatJson["result"]["airportDeparture"] = data["airport"]["origin"]["name"] if data["airport"]["origin"] != None else None
+    formatJson["result"]["airportArrival"] = data["airport"]["destination"]["name"] if data["airport"]["destination"] != None else None
+
     formatJson["result"]["coordsAirportArrival"] = [data["airport"]["destination"]["position"]["latitude"],
-                                                    data["airport"]["destination"]["position"]["longitude"]]
+                                                    data["airport"]["destination"]["position"]["longitude"]] if data["airport"]["destination"] != None else None
 
     writeJson("nowPlanesInfo.json", f1)
 
@@ -313,7 +316,6 @@ def writeDataTrajectory(data,f1):
     formatJson["result"]["avito"] = getCars(state)
 
     formatJson = json.dumps(formatJson)
-
     return formatJson
 
 
@@ -326,6 +328,7 @@ def getTrajectory(flightID, f1):
             "user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
         req = get(url, headers=headers, timeout=10)
         data = req.json()
+        print(data)
         # В статусе лежит инофрмация с аэропорта(задержан ли рейс и т.д.) в aircraft лежит информация о том, что за самолёт, стране где он зарегистрирован
         # и его изображения. В airport подробная информация об аэропортах вылета и прибытия во flightHistory лежит история полётов
         # в тайм лежит время отправления и прибытия по расписанию, реальное и ожидаемое
@@ -340,7 +343,7 @@ def getTrajectory(flightID, f1):
         else:
             print(sys.exc_info())
             print(req.status_code)
-            exit(1)
+            exit(4)
     print("Information received in: " + str(time.time() - t1) + " seconds")
 
 def writeJson(filename, formatJson):
@@ -464,6 +467,7 @@ if __name__ == "__main__":
                     continue
                 f2 = getTrajectory(newQuery, f1)
             writeJson("trajectoryInfo.json", f2)
+            print("Success\n")
             time.sleep(3-(time.time()-allTime))
         except:
             print(sys.exc_info())

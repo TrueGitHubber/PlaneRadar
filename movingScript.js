@@ -108,7 +108,10 @@ function updateTrajectory(data)
 	{
 		return;
 	}
-	drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
+	if(data['coordsAirportArrival']  !== null)
+	{
+		drawDashTrajectory(data['trail'][data['trail'].length-1][0], data['trail'][data['trail'].length-1][1], data['coordsAirportArrival'][0], data['coordsAirportArrival'][1]);
+	}
 	drawTrajectoryBezier(data['trail']);
 	decodeIndexAvito = ['#first', '#second', '#third', '#fourth', '#fifth', '#sixth', '#seventh', '#eighth', '#ninth','#tenth'];
 	if(data['avito'] !== null && data['avito'].length > 0)
