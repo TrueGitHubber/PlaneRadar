@@ -231,7 +231,6 @@ def reverseGeocoder(point):
         g = geocoder.yandex(point, method='reverse')
         if (g.state == None):
             g = geocoder.google(point, method='reverse')
-        print(g.state)
         return g.state
     except:
         return None
@@ -281,9 +280,11 @@ def writeDataTrajectory(data,f1):
     formatJson["result"]["speed"] = data["trail"][0]["spd"]
     formatJson["result"]["height"] = data["trail"][0]["alt"]
 
-    formatJson["result"]["airline"] = data["airline"]["name"]
-    formatJson["result"]["aircraftModel"] = data["aircraft"]["model"]["text"]
-    formatJson["result"]["aircraftID"] = data["aircraft"]["hex"]
+    formatJson["result"]["airline"] = data["airline"]["name"] if data["airline"] != None else None
+    
+    formatJson["result"]["aircraftModel"] = data["aircraft"]["model"]["text"] if data["aircraft"] != None else None
+    formatJson["result"]["aircraftID"] = data["aircraft"]["hex"] if data["aircraft"] != None else None
+
     formatJson["result"]["flightNumber"] = data["identification"]["number"]["default"]
     formatJson["result"]["scheduledDeparture"] = data["time"]["scheduled"]["departure"]
     formatJson["result"]["scheduledDeparture"] = getTime(formatJson["result"]["scheduledDeparture"])
@@ -328,7 +329,6 @@ def getTrajectory(flightID, f1):
             "user-agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"
         req = get(url, headers=headers, timeout=10)
         data = req.json()
-        print(data)
         # В статусе лежит инофрмация с аэропорта(задержан ли рейс и т.д.) в aircraft лежит информация о том, что за самолёт, стране где он зарегистрирован
         # и его изображения. В airport подробная информация об аэропортах вылета и прибытия во flightHistory лежит история полётов
         # в тайм лежит время отправления и прибытия по расписанию, реальное и ожидаемое
