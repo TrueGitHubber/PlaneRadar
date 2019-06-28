@@ -231,6 +231,7 @@ def reverseGeocoder(point):
         g = geocoder.yandex(point, method='reverse')
         if (g.state == None):
             g = geocoder.google(point, method='reverse')
+        print(g.state)
         return g.state
     except:
         return None
@@ -270,7 +271,6 @@ def writeDataTrajectory(data,f1):
 
     for el in reversed(data["trail"]):
         formatJson["result"]["trail"].append([el["lat"], el["lng"]])
-
         # formatJson["result"][i]["latitude"] = el["lat"]
         # formatJson["result"][i]["longitude"] = el["lng"]
         # formatJson["result"][i]["direction"] = el["hd"]
@@ -281,7 +281,7 @@ def writeDataTrajectory(data,f1):
     formatJson["result"]["height"] = data["trail"][0]["alt"]
 
     formatJson["result"]["airline"] = data["airline"]["name"] if data["airline"] != None else None
-    
+
     formatJson["result"]["aircraftModel"] = data["aircraft"]["model"]["text"] if data["aircraft"] != None else None
     formatJson["result"]["aircraftID"] = data["aircraft"]["hex"] if data["aircraft"] != None else None
 
@@ -311,6 +311,13 @@ def writeDataTrajectory(data,f1):
 
     lastP = lastPoint()
     formatJson["result"]["trail"].append(lastP)
+
+ #   for i in range(len(formatJson["result"]["trail"])-1):
+        #if(abs(formatJson["result"]["trail"][i][0]-formatJson["result"]["trail"][i+1][0])>10):
+       #     formatJson["result"]["trail"][i + 1][0] += 360
+   #     if(abs(formatJson["result"]["trail"][i][1]-formatJson["result"]["trail"][i+1][1])>50):
+   #         formatJson["result"]["trail"][i+1][1] += 360
+
     state = reverseGeocoder(lastP)
     formatJson["result"]["city"] = state
 
@@ -467,6 +474,7 @@ if __name__ == "__main__":
                     continue
                 f2 = getTrajectory(newQuery, f1)
             writeJson("trajectoryInfo.json", f2)
+            print("It takes "+str(time.time()-allTime)+" seconds")
             print("Success\n")
             time.sleep(3-(time.time()-allTime))
         except:
