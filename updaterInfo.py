@@ -226,7 +226,6 @@ def getTime(a):
 
 
 def reverseGeocoder(point):
-   # point = [61.668832,50.836461]
     try:
         g = geocoder.yandex(point, method='reverse')
         if (g.state == None):
@@ -250,9 +249,10 @@ def getCars(state):
         data = req.json()
         return data["data"]
     except:
+        print(414441224)
         if "ReadTimeout" in str(sys.exc_info()):
             print("ReadTimeout avito")
-            getCars(state)
+            return None
         elif "KeyError" in str(sys.exc_info()):
             print(state + " not in regions list")
             return None
@@ -260,6 +260,7 @@ def getCars(state):
             print(sys.exc_info())
             print(req.status_code)
             return None
+        return None
 
 
 def writeDataTrajectory(data,f1):
@@ -320,9 +321,10 @@ def writeDataTrajectory(data,f1):
 
     state = reverseGeocoder(lastP)
     formatJson["result"]["city"] = state
-
-    formatJson["result"]["avito"] = getCars(state)
-
+   # try:
+    #    formatJson["result"]["avito"] = getCars(state)
+    #except:
+    formatJson["result"]["avito"] = None
     formatJson = json.dumps(formatJson)
     return formatJson
 
@@ -350,6 +352,7 @@ def getTrajectory(flightID, f1):
         else:
             print(sys.exc_info())
             print(req.status_code)
+            writeJson("nowPlanesInfo.json", f1)
             exit(4)
     print("Information received in: " + str(time.time() - t1) + " seconds")
 
